@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
 import type { User } from '@supabase/supabase-js'
 
 interface Props {
@@ -11,48 +10,60 @@ interface Props {
 }
 
 export function HeaderMenu({ user, profile }: Props) {
-  const router = useRouter()
   const supabase = createClient()
 
   async function signOut() {
     await supabase.auth.signOut()
-    router.refresh()
-    router.push('/')
+    window.location.href = '/'
   }
 
   if (!user) {
     return (
-      <Link
-        href="/login"
-        className="bg-brand-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-brand-700 transition"
-      >
-        ログイン
-      </Link>
+      <div className="flex items-center gap-2">
+        <Link
+          href="/login"
+          className="text-sm font-medium text-gray-600 hover:text-brand-600 px-3 py-2 rounded-lg hover:bg-brand-50 transition-all"
+        >
+          ログイン
+        </Link>
+        <Link
+          href="/register"
+          className="bg-brand-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-brand-700 shadow-sm shadow-brand-200 transition-all hover:-translate-y-0.5"
+        >
+          登録
+        </Link>
+      </div>
     )
   }
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2">
       {profile?.role === 'admin' && (
         <Link
           href="/admin"
-          className="text-xs bg-gray-100 px-3 py-1 rounded-full text-gray-600 hover:bg-gray-200 transition"
+          className="text-xs bg-amber-50 border border-amber-200 text-amber-700 px-3 py-1.5 rounded-lg hover:bg-amber-100 transition-all font-semibold"
         >
           管理
         </Link>
       )}
       <Link
         href="/post/new"
-        className="bg-brand-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-brand-700 transition"
+        className="bg-brand-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-brand-700 shadow-sm shadow-brand-200 transition-all hover:-translate-y-0.5"
       >
-        口コミ投稿
+        + 投稿
       </Link>
-      <Link href="/mypage" className="text-sm text-gray-700 hover:text-brand-600 transition">
-        {profile?.display_name ?? 'マイページ'}
+      <Link
+        href="/mypage"
+        className="flex items-center gap-1.5 text-sm text-gray-600 hover:text-brand-600 px-3 py-2 rounded-lg hover:bg-brand-50 transition-all"
+      >
+        <span className="w-6 h-6 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center text-xs font-bold">
+          {profile?.display_name?.charAt(0)?.toUpperCase() ?? '?'}
+        </span>
+        <span className="hidden sm:inline font-medium">{profile?.display_name ?? 'マイページ'}</span>
       </Link>
       <button
         onClick={signOut}
-        className="text-sm text-gray-400 hover:text-gray-600 transition"
+        className="text-xs text-gray-400 hover:text-gray-600 px-2 py-2 rounded-lg hover:bg-gray-100 transition-all"
       >
         ログアウト
       </button>

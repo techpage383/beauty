@@ -17,16 +17,31 @@ export async function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="font-bold text-xl text-brand-600 tracking-tight">
-          True Log
+        <Link href="/" className="flex items-center gap-2 group">
+          <span className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white text-xs font-black group-hover:bg-brand-700 transition-colors">
+            TL
+          </span>
+          <span className="font-bold text-lg text-gray-900 group-hover:text-brand-700 transition-colors">
+            True Log
+          </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-700">
-          <Link href="/clinics"   className="hover:text-brand-600 transition">クリニック</Link>
-          <Link href="/treatments" className="hover:text-brand-600 transition">施術</Link>
-          <Link href="/reviews"   className="hover:text-brand-600 transition">口コミ</Link>
+        <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
+          {[
+            { href: '/clinics',    label: 'クリニック' },
+            { href: '/treatments', label: '施術' },
+            { href: '/reviews',    label: '口コミ' },
+          ].map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="px-3 py-2 rounded-lg text-gray-600 hover:text-brand-600 hover:bg-brand-50 transition-all"
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
 
         <HeaderMenu user={user} profile={profile} />

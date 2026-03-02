@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { createStaticClient } from '@/lib/supabase/static'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
@@ -61,69 +62,80 @@ export default async function ReviewDetailPage({ params
     <>
       <JsonLd data={reviewSchema(r)} />
 
-      <div className="max-w-3xl mx-auto px-4 py-10">
+      <div className="max-w-3xl mx-auto px-4 py-12">
         <Breadcrumb crumbs={[
           { name: 'TOP', href: '/' },
           { name: '口コミ一覧', href: '/reviews' },
           { name: r.title, href: `/reviews/${r.slug}` },
         ]} />
 
-        <article className="bg-white rounded-2xl border border-gray-100 p-6">
-          {/* Meta */}
-          <div className="flex flex-wrap items-center gap-3 text-sm text-gray-400 mb-4">
-            {r.clinics && (
-              <a href={`/clinics/${r.clinics.slug}`} className="text-brand-600 hover:underline font-medium">
-                {r.clinics.name}
-              </a>
-            )}
-            {r.treatments && (
-              <span className="bg-gray-100 px-2 py-0.5 rounded-full">{r.treatments.name}</span>
-            )}
-            {r.treatment_date && <span>{r.treatment_date}</span>}
-          </div>
-
-          <h1 className="text-xl font-bold text-gray-900 mb-3">{r.title}</h1>
-
-          {r.rating && (
-            <div className="flex items-center gap-2 mb-4">
-              <StarRating rating={r.rating} />
-              <span className="text-sm text-gray-500">{r.rating}.0 / 5</span>
-            </div>
-          )}
-
-          {/* Images */}
+        <article className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+          {/* Hero image */}
           {r.review_images && r.review_images.length > 0 && (
-            <div className="flex gap-2 mb-6 flex-wrap">
+            <div className="flex gap-2 p-5 pb-0 flex-wrap">
               {r.review_images.map(img => (
-                <div key={img.id} className="relative w-32 h-32 rounded-xl overflow-hidden border border-gray-100">
+                <div key={img.id} className="relative w-28 h-28 rounded-2xl overflow-hidden border border-gray-100">
                   <Image
                     src={getPublicUrl(process.env.NEXT_PUBLIC_SUPABASE_URL!, img.storage_path)}
                     alt="口コミ画像"
                     fill
                     className="object-cover"
-                    sizes="128px"
+                    sizes="112px"
                   />
                 </div>
               ))}
             </div>
           )}
 
-          <p className="text-gray-700 leading-relaxed whitespace-pre-wrap mb-6">{r.body}</p>
-
-          {/* Cost */}
-          {r.cost && (
-            <div className="border-t border-gray-100 pt-4">
-              <span className="text-sm text-gray-500">費用：</span>
-              <span className="font-medium text-gray-800 ml-1">¥{r.cost.toLocaleString()}</span>
+          <div className="p-7">
+            {/* Meta tags */}
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              {r.clinics && (
+                <Link
+                  href={`/clinics/${r.clinics.slug}`}
+                  className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 hover:bg-brand-50 hover:text-brand-600 px-3 py-1 rounded-full font-medium transition-colors"
+                >
+                  🏥 {r.clinics.name}
+                </Link>
+              )}
+              {r.treatments && (
+                <span className="text-xs bg-brand-50 text-brand-600 px-3 py-1 rounded-full font-medium">
+                  ✨ {r.treatments.name}
+                </span>
+              )}
+              {r.treatment_date && (
+                <span className="text-xs text-gray-400">{r.treatment_date}</span>
+              )}
             </div>
-          )}
 
-          {/* Author */}
-          <div className="border-t border-gray-100 pt-4 mt-4 flex items-center gap-2">
-            <div className="w-8 h-8 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 font-bold text-sm">
-              {(r.profiles?.display_name ?? '?')[0]}
+            <h1 className="text-xl font-bold text-gray-900 mb-4 leading-snug">{r.title}</h1>
+
+            {r.rating && (
+              <div className="flex items-center gap-2 mb-6">
+                <StarRating rating={r.rating} />
+                <span className="text-sm text-gray-500 font-medium">{r.rating}.0 / 5</span>
+              </div>
+            )}
+
+            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap text-[15px]">{r.body}</p>
+
+            {/* Cost */}
+            {r.cost && (
+              <div className="mt-6 pt-5 border-t border-gray-100 flex items-center gap-2">
+                <span className="text-xs text-gray-400 font-medium">施術費用</span>
+                <span className="font-bold text-gray-900 text-lg">¥{r.cost.toLocaleString()}</span>
+              </div>
+            )}
+
+            {/* Author */}
+            <div className="mt-5 pt-5 border-t border-gray-100 flex items-center gap-2">
+              <div className="w-8 h-8 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 font-bold text-sm shrink-0">
+                {(r.profiles?.display_name ?? '?')[0].toUpperCase()}
+              </div>
+              <span className="text-sm text-gray-500 font-medium">
+                {r.profiles?.display_name ?? '匿名'}
+              </span>
             </div>
-            <span className="text-sm text-gray-500">{r.profiles?.display_name ?? '匿名'}</span>
           </div>
         </article>
       </div>

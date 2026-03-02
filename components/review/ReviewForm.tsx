@@ -81,7 +81,7 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
 
         await supabase.from('review_images').insert({
           review_id: review.id,
-          storage_path: `reviews/${path}`,
+          storage_path: path,
           order_index: i,
         })
       }

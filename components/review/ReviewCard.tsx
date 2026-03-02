@@ -13,31 +13,52 @@ export function ReviewCard({ review }: { review: Review }) {
   return (
     <Link
       href={`/reviews/${review.slug}`}
-      className="block bg-white rounded-2xl border border-gray-100 hover:shadow-md transition overflow-hidden"
+      className="group flex flex-col bg-white rounded-3xl border border-gray-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-50/50 transition-all duration-200 overflow-hidden hover:-translate-y-1"
     >
-      {imageUrl && (
-        <div className="relative w-full h-48">
+      {/* Thumbnail */}
+      {imageUrl ? (
+        <div className="relative w-full h-48 overflow-hidden">
           <Image
             src={imageUrl}
             alt={review.title}
             fill
-            className="object-cover"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, 33vw"
           />
         </div>
+      ) : (
+        <div className="w-full h-36 bg-gradient-to-br from-brand-50 via-pink-50 to-rose-50 flex items-center justify-center relative overflow-hidden">
+          <div className="absolute -top-4 -right-4 w-20 h-20 bg-brand-100 rounded-full opacity-50" />
+          <span className="text-4xl opacity-30 relative">✍️</span>
+        </div>
       )}
-      <div className="p-5">
-        <div className="flex items-center gap-2 mb-2">
+
+      {/* Body */}
+      <div className="flex-1 flex flex-col p-5">
+        <div className="flex items-center gap-2 mb-3 flex-wrap">
           {review.rating && <StarRating rating={review.rating} />}
           {review.clinics && (
-            <span className="text-xs text-gray-400">{review.clinics.name}</span>
+            <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-medium">
+              {review.clinics.name}
+            </span>
           )}
         </div>
-        <h3 className="font-bold text-gray-900 mb-1 line-clamp-1">{review.title}</h3>
-        <p className="text-sm text-gray-600 line-clamp-2">{review.body}</p>
-        <div className="flex items-center justify-between mt-3 text-xs text-gray-400">
-          <span>{review.treatments?.name}</span>
-          {review.cost && <span>¥{review.cost.toLocaleString()}</span>}
+
+        <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 leading-snug group-hover:text-brand-700 transition-colors">
+          {review.title}
+        </h3>
+
+        <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed flex-1">
+          {review.body}
+        </p>
+
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-50 text-xs">
+          <span className="bg-brand-50 text-brand-600 px-2.5 py-1 rounded-full font-semibold">
+            {review.treatments?.name ?? '施術'}
+          </span>
+          {review.cost && (
+            <span className="font-bold text-gray-600">¥{review.cost.toLocaleString()}</span>
+          )}
         </div>
       </div>
     </Link>

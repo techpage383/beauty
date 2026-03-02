@@ -32,23 +32,29 @@ export default async function ReviewsPage({
     .range(from, from + PER_PAGE - 1)
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
+    <div className="max-w-6xl mx-auto px-4 py-12">
       <Breadcrumb crumbs={[
         { name: 'TOP', href: '/' },
         { name: '口コミ一覧', href: '/reviews' },
       ]} />
 
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">口コミ一覧</h1>
+      <div className="flex items-end justify-between mb-10">
+        <div>
+          <p className="text-brand-500 text-xs font-bold tracking-widest mb-1">REVIEWS</p>
+          <h1 className="text-2xl font-bold text-gray-900">口コミ一覧</h1>
+        </div>
         <span className="text-sm text-gray-400">{count ?? 0}件</span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {(reviews as Review[])?.map(r => <ReviewCard key={r.id} review={r} />)}
-      </div>
-
-      {!reviews?.length && (
-        <p className="text-center text-gray-400 py-20">口コミがまだありません。</p>
+      {reviews?.length ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {(reviews as Review[]).map(r => <ReviewCard key={r.id} review={r} />)}
+        </div>
+      ) : (
+        <div className="bg-white border border-dashed border-gray-200 rounded-3xl py-24 text-center text-gray-400">
+          <p className="text-5xl mb-4">✍️</p>
+          <p className="font-medium">まだ口コミがありません</p>
+        </div>
       )}
 
       <Pagination page={page} total={count ?? 0} perPage={PER_PAGE} basePath="/reviews" />

@@ -8,13 +8,13 @@ export function Breadcrumb({ crumbs }: { crumbs: Crumb[] }) {
   return (
     <>
       <JsonLd data={breadcrumbSchema(crumbs)} />
-      <nav className="text-sm text-gray-500 flex flex-wrap items-center gap-1 mb-6">
+      <nav className="flex flex-wrap items-center gap-1 mb-8 text-xs text-gray-400">
         {crumbs.map((c, i) => (
           <span key={c.href} className="flex items-center gap-1">
-            {i > 0 && <span>›</span>}
+            {i > 0 && <span className="text-gray-300">›</span>}
             {i === crumbs.length - 1
-              ? <span className="text-gray-700 font-medium">{c.name}</span>
-              : <Link href={c.href} className="hover:text-brand-600 transition">{c.name}</Link>
+              ? <span className="text-gray-600 font-medium">{c.name}</span>
+              : <Link href={c.href} className="hover:text-brand-600 transition-colors">{c.name}</Link>
             }
           </span>
         ))}

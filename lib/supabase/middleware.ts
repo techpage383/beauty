@@ -39,7 +39,7 @@ export async function updateSession(request: NextRequest) {
       .eq('id', user.id)
       .single()
 
-    if (!profile || profile.role !== 'admin') {
+    if (!profile || profile.role !== 'admin' || !profile.is_active) {
       return NextResponse.redirect(new URL('/', request.url))
     }
   }

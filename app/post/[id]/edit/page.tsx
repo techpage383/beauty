@@ -29,8 +29,11 @@ export default async function EditReviewPage({ params
   ])
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-10">
-      <h1 className="text-2xl font-bold text-gray-900 mb-8">口コミを編集</h1>
+    <div className="max-w-2xl mx-auto px-4 py-12">
+      <div className="mb-8">
+        <p className="text-brand-500 text-xs font-bold tracking-widest mb-1">EDIT REVIEW</p>
+        <h1 className="text-2xl font-bold text-gray-900">口コミを編集</h1>
+      </div>
       <EditReviewForm
         review={review}
         clinics={clinics ?? []}

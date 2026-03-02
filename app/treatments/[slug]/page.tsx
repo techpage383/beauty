@@ -58,36 +58,49 @@ export default async function TreatmentDetailPage({ params
     <>
       {faqs.length > 0 && <JsonLd data={faqSchema(faqs)} />}
 
-      <div className="max-w-4xl mx-auto px-4 py-10">
+      <div className="max-w-4xl mx-auto px-4 py-12">
         <Breadcrumb crumbs={[
           { name: 'TOP', href: '/' },
           { name: '施術一覧', href: '/treatments' },
           { name: treatment.name, href: `/treatments/${treatment.slug}` },
         ]} />
 
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8">
+        {/* Treatment header card */}
+        <div className="bg-white rounded-3xl border border-gray-100 p-7 mb-10 shadow-sm">
           {treatment.category && (
-            <span className="inline-block bg-brand-100 text-brand-700 text-xs px-2 py-0.5 rounded-full mb-3">
+            <span className="inline-block bg-brand-50 text-brand-600 text-xs font-semibold px-3 py-1 rounded-full mb-4">
               {treatment.category}
             </span>
           )}
           <h1 className="text-2xl font-bold text-gray-900 mb-3">{treatment.name}</h1>
           {treatment.description && (
-            <p className="text-gray-700 leading-relaxed">{treatment.description}</p>
+            <p className="text-gray-600 leading-relaxed">{treatment.description}</p>
           )}
         </div>
 
         {/* FAQ */}
         {faqs.length > 0 && (
-          <section className="mb-10">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">よくある質問</h2>
-            <div className="space-y-3">
+          <section className="mb-12">
+            <h2 className="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
+              <span className="w-1 h-5 bg-brand-500 rounded-full inline-block" />
+              よくある質問
+            </h2>
+            <div className="space-y-2">
               {faqs.map((f: { question: string; answer: string }, i: number) => (
-                <details key={i} className="bg-white border border-gray-100 rounded-xl p-4 group">
-                  <summary className="font-medium text-gray-900 cursor-pointer">
-                    Q. {f.question}
+                <details
+                  key={i}
+                  className="group bg-white border border-gray-100 rounded-2xl overflow-hidden hover:border-brand-100 transition-colors"
+                >
+                  <summary className="flex items-start gap-3 px-5 py-4 cursor-pointer font-medium text-gray-900 list-none">
+                    <span className="text-brand-500 font-bold shrink-0">Q.</span>
+                    {f.question}
                   </summary>
-                  <p className="mt-3 text-gray-600 text-sm leading-relaxed">A. {f.answer}</p>
+                  <div className="px-5 pb-4 border-t border-gray-50">
+                    <p className="text-gray-600 text-sm leading-relaxed pt-3">
+                      <span className="text-brand-400 font-bold mr-1">A.</span>
+                      {f.answer}
+                    </p>
+                  </div>
                 </details>
               ))}
             </div>
@@ -95,15 +108,21 @@ export default async function TreatmentDetailPage({ params
         )}
 
         {/* Reviews */}
-        <h2 className="text-lg font-bold text-gray-900 mb-4">
-          口コミ（{reviews?.length ?? 0}件）
-        </h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-lg font-bold text-gray-900">
+            口コミ <span className="text-gray-400 font-normal text-base">（{reviews?.length ?? 0}件）</span>
+          </h2>
+        </div>
+
         {reviews?.length ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {(reviews as Review[]).map(r => <ReviewCard key={r.id} review={r} />)}
           </div>
         ) : (
-          <p className="text-gray-400 text-sm">まだ口コミがありません。</p>
+          <div className="bg-gray-50 border border-dashed border-gray-200 rounded-2xl py-16 text-center text-gray-400">
+            <p className="text-3xl mb-2">✍️</p>
+            <p className="text-sm">まだ口コミがありません</p>
+          </div>
         )}
       </div>
     </>
