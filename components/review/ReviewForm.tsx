@@ -73,15 +73,16 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
 
       // 2. Upload images
       for (let i = 0; i < blobs.length; i++) {
-        const path = `reviews/${userId}/${review.id}/${i}.webp`
+        const uploadPath  = `${userId}/${review.id}/${i}.webp`  // path within bucket
+        const storagePath = `reviews/${uploadPath}`              // bucket + path for URL
         const { error: storageErr } = await supabase.storage
           .from('reviews')
-          .upload(path, blobs[i], { contentType: 'image/webp', upsert: true })
+          .upload(uploadPath, blobs[i], { contentType: 'image/webp', upsert: true })
         if (storageErr) throw storageErr
 
         await supabase.from('review_images').insert({
           review_id: review.id,
-          storage_path: path,
+          storage_path: storagePath,
           order_index: i,
         })
       }

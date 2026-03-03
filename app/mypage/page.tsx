@@ -24,7 +24,7 @@ export default async function MyPage({
     .eq('id', user.id)
     .single()
 
-  if (!profile?.is_active) redirect('/banned')
+  if (profile && !profile.is_active) redirect('/banned')
 
   const { data: reviews } = await supabase
     .from('reviews')

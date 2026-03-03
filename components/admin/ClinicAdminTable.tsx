@@ -1,12 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Clinic } from '@/lib/supabase/types'
 
 export function ClinicAdminTable({ clinics: initial }: { clinics: Clinic[] }) {
-  const router    = useRouter()
   const supabase  = createClient()
   const [clinics, setClinics] = useState(initial)
   const [adding, setAdding]   = useState(false)
