@@ -6,6 +6,8 @@ import { ReviewCard } from '@/components/review/ReviewCard'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { faqSchema } from '@/lib/seo/schemas'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import type { Review } from '@/lib/supabase/types'
 
 export const revalidate = 3600
@@ -120,7 +122,7 @@ export default async function TreatmentDetailPage({ params
           </div>
         ) : (
           <div className="bg-gray-50 border border-dashed border-gray-200 rounded-2xl py-16 text-center text-gray-400">
-            <p className="text-3xl mb-2">✍️</p>
+            <FontAwesomeIcon icon={faPenToSquare} className="w-8 h-8 mx-auto mb-2 opacity-40" />
             <p className="text-sm">まだ口コミがありません</p>
           </div>
         )}

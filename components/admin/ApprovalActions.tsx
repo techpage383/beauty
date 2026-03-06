@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
   reviewId: string
@@ -57,7 +59,7 @@ export function ApprovalActions({ reviewId, reviewSlug }: Props) {
         disabled={loading}
         className="w-full bg-green-600 text-white py-2.5 rounded-xl font-medium hover:bg-green-700 transition disabled:opacity-50"
       >
-        ✓ 承認して公開
+        <FontAwesomeIcon icon={faCheck} className="w-3.5 h-3.5 mr-1.5" /> 承認して公開
       </button>
 
       <div className="space-y-2">
@@ -73,7 +75,7 @@ export function ApprovalActions({ reviewId, reviewSlug }: Props) {
           disabled={loading}
           className="w-full bg-red-600 text-white py-2.5 rounded-xl font-medium hover:bg-red-700 transition disabled:opacity-50"
         >
-          ✕ 却下する
+          <FontAwesomeIcon icon={faXmark} className="w-3.5 h-3.5 mr-1.5" /> 却下する
         </button>
       </div>
     </div>

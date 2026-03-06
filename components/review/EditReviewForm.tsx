@@ -3,6 +3,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons'
 import type { Clinic, Review, Treatment } from '@/lib/supabase/types'
 
 interface Props {
@@ -25,7 +28,7 @@ export function EditReviewForm({ review, clinics, treatments }: Props) {
   const [submitting, setSubmitting]   = useState(false)
   const [error, setError]             = useState('')
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
     setError('')
     if (!title || !body) { setError('タイトルと本文は必須です'); return }
@@ -99,7 +102,9 @@ export function EditReviewForm({ review, clinics, treatments }: Props) {
         <div className="flex gap-2">
           {[1,2,3,4,5].map(v => (
             <button key={v} type="button" onClick={() => setRating(v)}
-              className={`text-2xl transition ${v <= rating ? 'text-yellow-400' : 'text-gray-200 hover:text-yellow-200'}`}>★</button>
+              className={`transition ${v <= rating ? 'text-yellow-400' : 'text-gray-200 hover:text-yellow-200'}`}>
+              <FontAwesomeIcon icon={v <= rating ? faStar : faStarRegular} className="w-6 h-6" />
+            </button>
           ))}
         </div>
       </div>

@@ -3,6 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import { ReviewCard } from '@/components/review/ReviewCard'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 import { Pagination } from '@/components/ui/Pagination'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import type { Review } from '@/lib/supabase/types'
 
 export const revalidate = 3600
@@ -52,7 +54,7 @@ export default async function ReviewsPage({
         </div>
       ) : (
         <div className="bg-white border border-dashed border-gray-200 rounded-3xl py-24 text-center text-gray-400">
-          <p className="text-5xl mb-4">✍️</p>
+          <FontAwesomeIcon icon={faPenToSquare} className="w-10 h-10 mx-auto mb-4 opacity-40" />
           <p className="font-medium">まだ口コミがありません</p>
         </div>
       )}

@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 import { Pagination } from '@/components/ui/Pagination'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons'
 
 export const revalidate = 3600
 
@@ -65,7 +67,7 @@ export default async function TreatmentsPage({
                 href={`/treatments/${t!.slug}`}
                 className="group flex items-center gap-2 bg-white border border-gray-100 rounded-xl px-4 py-3 hover:border-brand-200 hover:bg-brand-50 hover:-translate-y-0.5 transition-all"
               >
-                <span className="text-base shrink-0">✨</span>
+                <FontAwesomeIcon icon={faWandMagicSparkles} className="w-3.5 h-3.5 text-brand-400 shrink-0" />
                 <p className="text-sm font-medium text-gray-700 group-hover:text-brand-700 line-clamp-1 transition-colors">
                   {t!.name}
                 </p>
@@ -77,7 +79,7 @@ export default async function TreatmentsPage({
 
       {!Object.keys(byCategory).length && (
         <div className="bg-white border border-dashed border-gray-200 rounded-3xl py-20 text-center text-gray-400">
-          <p className="text-4xl mb-3">✨</p>
+          <FontAwesomeIcon icon={faWandMagicSparkles} className="w-10 h-10 mx-auto mb-3 opacity-30" />
           <p>施術が登録されていません</p>
         </div>
       )}

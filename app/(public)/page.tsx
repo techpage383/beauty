@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { ReviewCard } from '@/components/review/ReviewCard'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUserPlus, faPenToSquare, faShareNodes, faHospital, faWandMagicSparkles, faArrowRight } from '@fortawesome/free-solid-svg-icons'
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import type { Review } from '@/lib/supabase/types'
 
 export const revalidate = 3600
@@ -28,11 +31,16 @@ export default async function HomePage() {
     supabase.from('clinics').select('*', { count: 'exact', head: true }).eq('is_published', true),
   ])
 
+  const steps: { step: string; icon: IconDefinition; title: string; desc: string }[] = [
+    { step: '01', icon: faUserPlus,     title: '無料登録',   desc: 'メールアドレスとパスワードで今すぐ始められます。' },
+    { step: '02', icon: faPenToSquare,  title: '施術を投稿', desc: 'クリニック・施術・費用・評価を入力して口コミを作成。' },
+    { step: '03', icon: faShareNodes,   title: '公開・シェア', desc: '審査後に口コミが公開され、同じ悩みを持つ方の参考に。' },
+  ]
+
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gray-950 text-white">
-        {/* background glow blobs */}
         <div className="absolute -top-32 -left-32 w-[600px] h-[600px] bg-brand-700 rounded-full blur-[120px] opacity-20 pointer-events-none" />
         <div className="absolute -bottom-24 -right-24 w-[500px] h-[500px] bg-pink-600 rounded-full blur-[120px] opacity-15 pointer-events-none" />
 
@@ -55,9 +63,10 @@ export default async function HomePage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-20">
             <Link
               href="/reviews"
-              className="bg-brand-600 text-white px-8 py-4 rounded-2xl font-semibold text-base hover:bg-brand-500 shadow-xl shadow-brand-900/40 transition-all hover:-translate-y-0.5 active:translate-y-0"
+              className="bg-brand-600 text-white px-8 py-4 rounded-2xl font-semibold text-base hover:bg-brand-500 shadow-xl shadow-brand-900/40 transition-all hover:-translate-y-0.5 active:translate-y-0 inline-flex items-center justify-center gap-2"
             >
-              口コミを探す →
+              口コミを探す
+              <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4" />
             </Link>
             <Link
               href="/register"
@@ -93,15 +102,11 @@ export default async function HomePage() {
           <h2 className="text-3xl font-bold text-gray-900">かんたん3ステップ</h2>
         </div>
         <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-8">
-          {[
-            { step: '01', icon: '📝', title: '無料登録', desc: 'メールアドレスとパスワードで今すぐ始められます。' },
-            { step: '02', icon: '✍️', title: '施術を投稿', desc: 'クリニック・施術・費用・評価を入力して口コミを作成。' },
-            { step: '03', icon: '🌟', title: '公開・シェア', desc: '審査後に口コミが公開され、同じ悩みを持つ方の参考に。' },
-          ].map(item => (
+          {steps.map(item => (
             <div key={item.step} className="relative bg-white rounded-3xl p-8 shadow-sm border border-gray-100 text-center hover:shadow-md hover:border-brand-100 transition-all">
               <span className="absolute top-5 right-5 text-xs font-bold text-gray-200">{item.step}</span>
-              <div className="w-14 h-14 bg-brand-50 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-5">
-                {item.icon}
+              <div className="w-14 h-14 bg-brand-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                <FontAwesomeIcon icon={item.icon} className="w-6 h-6 text-brand-600" />
               </div>
               <h3 className="font-bold text-gray-900 text-lg mb-2">{item.title}</h3>
               <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
@@ -128,7 +133,7 @@ export default async function HomePage() {
           </div>
         ) : (
           <div className="bg-gray-50 border border-dashed border-gray-200 rounded-3xl py-24 text-center text-gray-400">
-            <p className="text-5xl mb-4">✍️</p>
+            <FontAwesomeIcon icon={faPenToSquare} className="w-10 h-10 mx-auto mb-4 opacity-40" />
             <p className="mb-5 font-medium">まだ口コミがありません</p>
             <Link href="/post/new" className="text-sm text-brand-600 hover:underline font-semibold">
               最初の口コミを投稿する →
@@ -159,7 +164,7 @@ export default async function HomePage() {
                   className="group bg-white hover:bg-brand-50 border border-gray-100 hover:border-brand-200 rounded-2xl p-5 text-center transition-all hover:-translate-y-0.5 hover:shadow-md"
                 >
                   <div className="w-11 h-11 bg-brand-50 group-hover:bg-brand-100 rounded-xl flex items-center justify-center mx-auto mb-3 transition-colors">
-                    <span className="text-xl">🏥</span>
+                    <FontAwesomeIcon icon={faHospital} className="w-5 h-5 text-brand-500" />
                   </div>
                   <p className="text-sm font-semibold text-gray-800 group-hover:text-brand-700 line-clamp-2 leading-snug transition-colors">
                     {c.name}
@@ -196,7 +201,7 @@ export default async function HomePage() {
                 href={`/treatments/${t.slug}`}
                 className="group flex items-center gap-3 bg-white hover:bg-gradient-to-r hover:from-brand-50 hover:to-pink-50 border border-gray-100 hover:border-brand-200 rounded-2xl px-5 py-4 transition-all hover:-translate-y-0.5"
               >
-                <span className="text-xl shrink-0">✨</span>
+                <FontAwesomeIcon icon={faWandMagicSparkles} className="w-4 h-4 text-brand-400 shrink-0" />
                 <p className="text-sm font-semibold text-gray-700 group-hover:text-brand-700 line-clamp-1 transition-colors">
                   {t.name}
                 </p>
@@ -222,9 +227,10 @@ export default async function HomePage() {
           </p>
           <Link
             href="/post/new"
-            className="inline-block bg-brand-600 text-white px-10 py-4 rounded-2xl font-bold text-base hover:bg-brand-500 shadow-xl shadow-brand-900/50 transition-all hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 bg-brand-600 text-white px-10 py-4 rounded-2xl font-bold text-base hover:bg-brand-500 shadow-xl shadow-brand-900/50 transition-all hover:-translate-y-0.5"
           >
-            口コミを投稿する →
+            口コミを投稿する
+            <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4" />
           </Link>
         </div>
       </section>

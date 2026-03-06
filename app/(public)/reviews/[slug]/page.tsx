@@ -9,6 +9,8 @@ import { StarRating } from '@/components/ui/StarRating'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { reviewSchema } from '@/lib/seo/schemas'
 import { getPublicUrl } from '@/lib/image/upload'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHospital, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons'
 import type { Review } from '@/lib/supabase/types'
 
 export const revalidate = 3600
@@ -93,14 +95,16 @@ export default async function ReviewDetailPage({ params
               {r.clinics && (
                 <Link
                   href={`/clinics/${r.clinics.slug}`}
-                  className="inline-flex items-center gap-1 text-xs bg-gray-100 text-gray-600 hover:bg-brand-50 hover:text-brand-600 px-3 py-1 rounded-full font-medium transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs bg-gray-100 text-gray-600 hover:bg-brand-50 hover:text-brand-600 px-3 py-1 rounded-full font-medium transition-colors"
                 >
-                  🏥 {r.clinics.name}
+                  <FontAwesomeIcon icon={faHospital} className="w-3 h-3" />
+                  {r.clinics.name}
                 </Link>
               )}
               {r.treatments && (
-                <span className="text-xs bg-brand-50 text-brand-600 px-3 py-1 rounded-full font-medium">
-                  ✨ {r.treatments.name}
+                <span className="inline-flex items-center gap-1.5 text-xs bg-brand-50 text-brand-600 px-3 py-1 rounded-full font-medium">
+                  <FontAwesomeIcon icon={faWandMagicSparkles} className="w-3 h-3" />
+                  {r.treatments.name}
                 </span>
               )}
               {r.treatment_date && (

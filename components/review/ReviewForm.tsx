@@ -4,7 +4,10 @@ import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
-import { processImages, getPublicUrl } from '@/lib/image/upload'
+import { processImages } from '@/lib/image/upload'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { faStar as faStarRegular } from '@fortawesome/free-regular-svg-icons'
 import type { Clinic, Treatment } from '@/lib/supabase/types'
 
 interface Props {
@@ -41,7 +44,7 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
     }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
     setError('')
 
@@ -165,7 +168,7 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
               onClick={() => setRating(v)}
               className={`text-2xl transition ${v <= rating ? 'text-yellow-400' : 'text-gray-200 hover:text-yellow-200'}`}
             >
-              ★
+              <FontAwesomeIcon icon={v <= rating ? faStar : faStarRegular} className="w-6 h-6" />
             </button>
           ))}
         </div>

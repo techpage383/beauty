@@ -4,6 +4,8 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { StatusBadge } from '@/components/ui/Badge'
 import { StarRating } from '@/components/ui/StarRating'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleCheck, faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import type { Review } from '@/lib/supabase/types'
 
 export const metadata: Metadata = { title: 'マイページ' }
@@ -70,7 +72,7 @@ export default async function MyPage({
 
       {posted === '1' && (
         <div className="bg-green-50 border border-green-200 text-green-700 rounded-2xl p-4 mb-6 text-sm flex items-center gap-2">
-          <span>✅</span> 口コミを投稿しました。審査後に公開されます。
+          <FontAwesomeIcon icon={faCircleCheck} className="w-4 h-4 text-green-600 shrink-0" /> 口コミを投稿しました。審査後に公開されます。
         </div>
       )}
 
@@ -142,7 +144,7 @@ export default async function MyPage({
         </div>
       ) : (
         <div className="bg-white border border-dashed border-gray-200 rounded-3xl p-16 text-center text-gray-400">
-          <p className="text-5xl mb-4">✍️</p>
+          <FontAwesomeIcon icon={faPenToSquare} className="w-12 h-12 mb-4 opacity-30 text-gray-400" />
           <p className="mb-5 font-medium">まだ口コミがありません</p>
           <Link href="/post/new" className="text-brand-600 text-sm hover:underline font-semibold">
             最初の口コミを投稿する →

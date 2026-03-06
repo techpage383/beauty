@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 import { Pagination } from '@/components/ui/Pagination'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHospital } from '@fortawesome/free-solid-svg-icons'
 
 export const revalidate = 3600
 
@@ -54,8 +56,8 @@ export default async function ClinicsPage({
               className="group bg-white border border-gray-100 rounded-2xl p-5 hover:border-brand-200 hover:shadow-md transition-all hover:-translate-y-0.5"
             >
               <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-brand-50 rounded-xl flex items-center justify-center text-lg shrink-0 group-hover:bg-brand-100 transition-colors">
-                  🏥
+                <div className="w-10 h-10 bg-brand-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-brand-100 transition-colors">
+                  <FontAwesomeIcon icon={faHospital} className="w-5 h-5 text-brand-500" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h2 className="font-bold text-gray-900 group-hover:text-brand-700 transition-colors truncate">
@@ -76,7 +78,7 @@ export default async function ClinicsPage({
         </div>
       ) : (
         <div className="bg-white border border-dashed border-gray-200 rounded-3xl py-20 text-center text-gray-400">
-          <p className="text-4xl mb-3">🏥</p>
+          <FontAwesomeIcon icon={faHospital} className="w-10 h-10 mx-auto mb-3 opacity-30" />
           <p>クリニックが登録されていません</p>
         </div>
       )}

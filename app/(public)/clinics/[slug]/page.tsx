@@ -6,6 +6,8 @@ import { ReviewCard } from '@/components/review/ReviewCard'
 import { Breadcrumb } from '@/components/layout/Breadcrumb'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { localBusinessSchema } from '@/lib/seo/schemas'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHospital, faLocationDot, faStar, faPenToSquare, faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
 import type { Review } from '@/lib/supabase/types'
 
 export const revalidate = 3600
@@ -70,19 +72,21 @@ export default async function ClinicDetailPage({ params
         {/* Clinic card */}
         <div className="bg-white rounded-3xl border border-gray-100 p-7 mb-10 shadow-sm">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 bg-brand-50 rounded-2xl flex items-center justify-center text-2xl shrink-0">
-              🏥
+            <div className="w-14 h-14 bg-brand-50 rounded-2xl flex items-center justify-center shrink-0">
+              <FontAwesomeIcon icon={faHospital} className="w-7 h-7 text-brand-500" />
             </div>
             <div className="flex-1">
               <h1 className="text-2xl font-bold text-gray-900 mb-1">{clinic.name}</h1>
               {clinic.address && (
-                <p className="text-sm text-gray-400 mb-2 flex items-center gap-1">
-                  <span>📍</span>{clinic.address}
+                <p className="text-sm text-gray-400 mb-2 flex items-center gap-1.5">
+                  <FontAwesomeIcon icon={faLocationDot} className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                  {clinic.address}
                 </p>
               )}
               {reviews && reviews.length > 0 && (
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-yellow-400 font-bold text-lg">★ {avgRating.toFixed(1)}</span>
+                  <FontAwesomeIcon icon={faStar} className="w-4 h-4 text-yellow-400" />
+                  <span className="text-yellow-600 font-bold text-lg">{avgRating.toFixed(1)}</span>
                   <span className="text-sm text-gray-400">（{reviews.length}件の口コミ）</span>
                 </div>
               )}
@@ -94,9 +98,10 @@ export default async function ClinicDetailPage({ params
                   href={clinic.website_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 mt-4 text-sm text-brand-600 hover:text-brand-700 font-semibold hover:underline"
+                  className="inline-flex items-center gap-1.5 mt-4 text-sm text-brand-600 hover:text-brand-700 font-semibold hover:underline"
                 >
-                  公式サイト →
+                  公式サイト
+                  <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-3 h-3" />
                 </a>
               )}
             </div>
@@ -116,7 +121,7 @@ export default async function ClinicDetailPage({ params
           </div>
         ) : (
           <div className="bg-gray-50 border border-dashed border-gray-200 rounded-2xl py-16 text-center text-gray-400">
-            <p className="text-3xl mb-2">✍️</p>
+            <FontAwesomeIcon icon={faPenToSquare} className="w-8 h-8 mx-auto mb-2 opacity-40" />
             <p className="text-sm">まだ口コミがありません</p>
           </div>
         )}

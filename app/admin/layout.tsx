@@ -1,6 +1,9 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChartBar, faPenToSquare, faHospital, faWandMagicSparkles, faUser } from '@fortawesome/free-solid-svg-icons'
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -15,12 +18,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   if (!profile || profile.role !== 'admin') redirect('/')
 
-  const navItems = [
-    { href: '/admin',             label: 'ダッシュボード', icon: '📊' },
-    { href: '/admin/reviews',     label: '口コミ管理',     icon: '✍️' },
-    { href: '/admin/clinics',     label: 'クリニック管理', icon: '🏥' },
-    { href: '/admin/treatments',  label: '施術管理',       icon: '✨' },
-    { href: '/admin/users',       label: 'ユーザー管理',   icon: '👤' },
+  const navItems: { href: string; label: string; icon: IconDefinition }[] = [
+    { href: '/admin',            label: 'ダッシュボード', icon: faChartBar },
+    { href: '/admin/reviews',    label: '口コミ管理',     icon: faPenToSquare },
+    { href: '/admin/clinics',    label: 'クリニック管理', icon: faHospital },
+    { href: '/admin/treatments', label: '施術管理',       icon: faWandMagicSparkles },
+    { href: '/admin/users',      label: 'ユーザー管理',   icon: faUser },
   ]
 
   return (
@@ -44,7 +47,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               href={item.href}
               className="flex items-center gap-2.5 px-3 py-2.5 text-sm rounded-lg hover:bg-gray-800 hover:text-white transition-all"
             >
-              <span className="text-base">{item.icon}</span>
+              <FontAwesomeIcon icon={item.icon} className="w-4 h-4 shrink-0" />
               {item.label}
             </Link>
           ))}
@@ -60,7 +63,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
       {/* Main */}
       <div className="flex-1 overflow-auto">
-        <div className="max-w-5xl mx-auto p-8">{children}</div>
+        <div className="max-w-7xl mx-auto p-8">{children}</div>
       </div>
     </div>
   )

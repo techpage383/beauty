@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { StarRating } from '@/components/ui/StarRating'
 import type { Review } from '@/lib/supabase/types'
 import { getPublicUrl } from '@/lib/image/upload'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 
 export function ReviewCard({ review }: { review: Review }) {
   const firstImage = review.review_images?.[0]
@@ -29,7 +31,7 @@ export function ReviewCard({ review }: { review: Review }) {
       ) : (
         <div className="w-full h-36 bg-gradient-to-br from-brand-50 via-pink-50 to-rose-50 flex items-center justify-center relative overflow-hidden">
           <div className="absolute -top-4 -right-4 w-20 h-20 bg-brand-100 rounded-full opacity-50" />
-          <span className="text-4xl opacity-30 relative">✍️</span>
+          <FontAwesomeIcon icon={faPenToSquare} className="w-10 h-10 opacity-30 relative text-brand-400" />
         </div>
       )}
 
