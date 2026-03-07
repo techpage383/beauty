@@ -62,7 +62,7 @@ export default async function ClinicDetailPage({ params
     <>
       <JsonLd data={localBusinessSchema(clinic, reviews?.length ?? 0, avgRating)} />
 
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="max-w-5xl mx-auto px-4 py-12">
         <Breadcrumb crumbs={[
           { name: 'TOP', href: '/' },
           { name: 'クリニック一覧', href: '/clinics' },
@@ -76,9 +76,9 @@ export default async function ClinicDetailPage({ params
               <FontAwesomeIcon icon={faHospital} className="w-7 h-7 text-brand-500" />
             </div>
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-gray-900 mb-1">{clinic.name}</h1>
+              <h1 className="text-3xl font-bold text-gray-900 mb-1">{clinic.name}</h1>
               {clinic.address && (
-                <p className="text-sm text-gray-400 mb-2 flex items-center gap-1.5">
+                <p className="text-base text-gray-400 mb-2 flex items-center gap-1.5">
                   <FontAwesomeIcon icon={faLocationDot} className="w-3.5 h-3.5 text-gray-400 shrink-0" />
                   {clinic.address}
                 </p>
@@ -86,19 +86,19 @@ export default async function ClinicDetailPage({ params
               {reviews && reviews.length > 0 && (
                 <div className="flex items-center gap-2 mb-3">
                   <FontAwesomeIcon icon={faStar} className="w-4 h-4 text-yellow-400" />
-                  <span className="text-yellow-600 font-bold text-lg">{avgRating.toFixed(1)}</span>
-                  <span className="text-sm text-gray-400">（{reviews.length}件の口コミ）</span>
+                  <span className="text-yellow-600 font-bold text-xl">{avgRating.toFixed(1)}</span>
+                  <span className="text-base text-gray-400">（{reviews.length}件の口コミ）</span>
                 </div>
               )}
               {clinic.description && (
-                <p className="text-gray-600 leading-relaxed text-sm">{clinic.description}</p>
+                <p className="text-gray-600 leading-relaxed text-base">{clinic.description}</p>
               )}
               {clinic.website_url && (
                 <a
                   href={clinic.website_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 mt-4 text-sm text-brand-600 hover:text-brand-700 font-semibold hover:underline"
+                  className="inline-flex items-center gap-1.5 mt-4 text-base text-brand-600 hover:text-brand-700 font-semibold hover:underline"
                 >
                   公式サイト
                   <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="w-3 h-3" />
@@ -110,8 +110,8 @@ export default async function ClinicDetailPage({ params
 
         {/* Reviews */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-gray-900">
-            口コミ <span className="text-gray-400 font-normal text-base">（{reviews?.length ?? 0}件）</span>
+          <h2 className="text-xl font-bold text-gray-900">
+            口コミ <span className="text-gray-400 font-normal text-xl">（{reviews?.length ?? 0}件）</span>
           </h2>
         </div>
 
@@ -122,7 +122,7 @@ export default async function ClinicDetailPage({ params
         ) : (
           <div className="bg-gray-50 border border-dashed border-gray-200 rounded-2xl py-16 text-center text-gray-400">
             <FontAwesomeIcon icon={faPenToSquare} className="w-8 h-8 mx-auto mb-2 opacity-40" />
-            <p className="text-sm">まだ口コミがありません</p>
+            <p className="text-base">まだ口コミがありません</p>
           </div>
         )}
       </div>

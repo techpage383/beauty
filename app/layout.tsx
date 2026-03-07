@@ -3,13 +3,13 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: {
-    default: 'True Log | 美容クリニック口コミ・施術ログ',
-    template: '%s | True Log',
+    default: 'Be Voice | 美容クリニック口コミ・施術ログ',
+    template: '%s | Be Voice',
   },
-  description: '実際に受けた美容医療の施術体験をシェア。クリニック・施術の口コミを探すならTrue Log。',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://truelog.example.com'),
+  description: '実際に受けた美容医療の施術体験をシェア。クリニック・施術の口コミを探すならBe Voice。',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://bevoice.example.com'),
   openGraph: {
-    siteName: 'True Log',
+    siteName: 'Be Voice',
     locale: 'ja_JP',
     type: 'website',
   },

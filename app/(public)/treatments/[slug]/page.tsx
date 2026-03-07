@@ -60,7 +60,7 @@ export default async function TreatmentDetailPage({ params
     <>
       {faqs.length > 0 && <JsonLd data={faqSchema(faqs)} />}
 
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="max-w-5xl mx-auto px-4 py-12">
         <Breadcrumb crumbs={[
           { name: 'TOP', href: '/' },
           { name: '施術一覧', href: '/treatments' },
@@ -70,11 +70,11 @@ export default async function TreatmentDetailPage({ params
         {/* Treatment header card */}
         <div className="bg-white rounded-3xl border border-gray-100 p-7 mb-10 shadow-sm">
           {treatment.category && (
-            <span className="inline-block bg-brand-50 text-brand-600 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+            <span className="inline-block bg-brand-50 text-brand-600 text-sm font-semibold px-3 py-1 rounded-full mb-4">
               {treatment.category}
             </span>
           )}
-          <h1 className="text-2xl font-bold text-gray-900 mb-3">{treatment.name}</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">{treatment.name}</h1>
           {treatment.description && (
             <p className="text-gray-600 leading-relaxed">{treatment.description}</p>
           )}
@@ -83,7 +83,7 @@ export default async function TreatmentDetailPage({ params
         {/* FAQ */}
         {faqs.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
+            <h2 className="text-xl font-bold text-gray-900 mb-5 flex items-center gap-2">
               <span className="w-1 h-5 bg-brand-500 rounded-full inline-block" />
               よくある質問
             </h2>
@@ -98,7 +98,7 @@ export default async function TreatmentDetailPage({ params
                     {f.question}
                   </summary>
                   <div className="px-5 pb-4 border-t border-gray-50">
-                    <p className="text-gray-600 text-sm leading-relaxed pt-3">
+                    <p className="text-gray-600 text-base leading-relaxed pt-3">
                       <span className="text-brand-400 font-bold mr-1">A.</span>
                       {f.answer}
                     </p>
@@ -111,8 +111,8 @@ export default async function TreatmentDetailPage({ params
 
         {/* Reviews */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-gray-900">
-            口コミ <span className="text-gray-400 font-normal text-base">（{reviews?.length ?? 0}件）</span>
+          <h2 className="text-xl font-bold text-gray-900">
+            口コミ <span className="text-gray-400 font-normal text-lg">（{reviews?.length ?? 0}件）</span>
           </h2>
         </div>
 
@@ -123,7 +123,7 @@ export default async function TreatmentDetailPage({ params
         ) : (
           <div className="bg-gray-50 border border-dashed border-gray-200 rounded-2xl py-16 text-center text-gray-400">
             <FontAwesomeIcon icon={faPenToSquare} className="w-8 h-8 mx-auto mb-2 opacity-40" />
-            <p className="text-sm">まだ口コミがありません</p>
+            <p className="text-base">まだ口コミがありません</p>
           </div>
         )}
       </div>

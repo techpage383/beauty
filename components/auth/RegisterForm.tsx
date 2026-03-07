@@ -92,42 +92,42 @@ export function RegisterForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {err && (
-        <p className="text-red-600 text-sm text-center bg-red-50 border border-red-100 rounded-xl py-2.5 px-3">
+        <p className="text-red-600 text-base text-center bg-red-50 border border-red-100 rounded-xl py-2.5 px-3">
           {err}
         </p>
       )}
 
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-1.5">表示名（ID）</label>
+        <label className="block text-base font-semibold text-gray-700 mb-1.5">表示名（ID）</label>
         <input
           type="text"
           value={displayName}
           onChange={e => setDisplayName(e.target.value)}
           required
           placeholder="ニックネームを入力"
-          className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors ${
+          className={`w-full border rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors ${
             errField === 'name' ? 'border-red-400 bg-red-50' : 'border-gray-200'
           }`}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-1.5">メールアドレス</label>
+        <label className="block text-base font-semibold text-gray-700 mb-1.5">メールアドレス</label>
         <input
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
           required
           placeholder="example@email.com"
-          className={`w-full border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors ${
+          className={`w-full border rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors ${
             errField === 'email' ? 'border-red-400 bg-red-50' : 'border-gray-200'
           }`}
         />
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-          パスワード <span className="text-gray-400 text-xs font-normal">（8文字以上）</span>
+        <label className="block text-base font-semibold text-gray-700 mb-1.5">
+          パスワード <span className="text-gray-400 text-sm font-normal">（8文字以上）</span>
         </label>
         <input
           type="password"
@@ -135,19 +135,19 @@ export function RegisterForm() {
           onChange={e => setPassword(e.target.value)}
           required
           placeholder="••••••••"
-          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors"
+          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-1.5">パスワード（確認）</label>
+        <label className="block text-base font-semibold text-gray-700 mb-1.5">パスワード（確認）</label>
         <input
           type="password"
           value={confirm}
           onChange={e => setConfirm(e.target.value)}
           required
           placeholder="••••••••"
-          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors"
+          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors"
         />
       </div>
 
@@ -159,7 +159,7 @@ export function RegisterForm() {
         {loading ? '登録中...' : 'アカウントを作成'}
       </button>
 
-      <p className="text-xs text-gray-400 text-center leading-relaxed pt-1">
+      <p className="text-sm text-gray-400 text-center leading-relaxed pt-1">
         登録することで
         <a href="/terms" className="text-brand-600 underline">利用規約</a>および
         <a href="/privacy" className="text-brand-600 underline">プライバシーポリシー</a>

@@ -33,7 +33,7 @@ export default async function ClinicsPage({
     .range(from, from + PER_PAGE - 1)
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
+    <div className="max-w-7xl mx-auto px-4 py-12">
       <Breadcrumb crumbs={[
         { name: 'TOP', href: '/' },
         { name: 'クリニック一覧', href: '/clinics' },
@@ -41,10 +41,10 @@ export default async function ClinicsPage({
 
       <div className="flex items-end justify-between mb-10">
         <div>
-          <p className="text-brand-500 text-xs font-bold tracking-widest mb-1">CLINICS</p>
-          <h1 className="text-2xl font-bold text-gray-900">クリニック一覧</h1>
+          <p className="text-brand-500 text-sm font-bold tracking-widest mb-1">CLINICS</p>
+          <h1 className="text-3xl font-bold text-gray-900">クリニック一覧</h1>
         </div>
-        <span className="text-sm text-gray-400">{count ?? 0}件</span>
+        <span className="text-base text-gray-400">{count ?? 0}件</span>
       </div>
 
       {clinics?.length ? (
@@ -64,10 +64,10 @@ export default async function ClinicsPage({
                     {clinic.name}
                   </h2>
                   {clinic.address && (
-                    <p className="text-xs text-gray-400 mt-0.5 truncate">{clinic.address}</p>
+                    <p className="text-sm text-gray-400 mt-0.5 truncate">{clinic.address}</p>
                   )}
                   {clinic.description && (
-                    <p className="text-sm text-gray-500 mt-2 line-clamp-2 leading-relaxed">
+                    <p className="text-base text-gray-500 mt-2 line-clamp-2 leading-relaxed">
                       {clinic.description}
                     </p>
                   )}

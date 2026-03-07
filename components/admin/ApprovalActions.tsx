@@ -52,7 +52,7 @@ export function ApprovalActions({ reviewId, reviewSlug }: Props) {
 
   return (
     <div className="border-t border-gray-100 pt-4 space-y-3">
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-red-500 text-base">{error}</p>}
 
       <button
         onClick={approve}
@@ -68,7 +68,7 @@ export function ApprovalActions({ reviewId, reviewSlug }: Props) {
           onChange={e => setReason(e.target.value)}
           placeholder="却下理由を入力してください"
           rows={2}
-          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-300 resize-none"
+          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-red-300 resize-none"
         />
         <button
           onClick={reject}

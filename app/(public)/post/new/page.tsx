@@ -16,11 +16,11 @@ export default async function PostNewPage() {
   ])
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-12">
+    <div className="max-w-3xl mx-auto px-4 py-12">
       <div className="mb-8">
-        <p className="text-brand-500 text-xs font-bold tracking-widest mb-1">POST REVIEW</p>
-        <h1 className="text-2xl font-bold text-gray-900">口コミを投稿する</h1>
-        <p className="text-gray-500 text-sm mt-1">
+        <p className="text-brand-500 text-sm font-bold tracking-widest mb-1">POST REVIEW</p>
+        <h1 className="text-3xl font-bold text-gray-900">口コミを投稿する</h1>
+        <p className="text-gray-500 text-base mt-1">
           投稿後に審査があります。承認されると公開されます。
         </p>
       </div>

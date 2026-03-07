@@ -64,7 +64,7 @@ export default async function ReviewDetailPage({ params
     <>
       <JsonLd data={reviewSchema(r)} />
 
-      <div className="max-w-3xl mx-auto px-4 py-12">
+      <div className="max-w-4xl mx-auto px-4 py-12">
         <Breadcrumb crumbs={[
           { name: 'TOP', href: '/' },
           { name: '口コミ一覧', href: '/reviews' },
@@ -95,29 +95,29 @@ export default async function ReviewDetailPage({ params
               {r.clinics && (
                 <Link
                   href={`/clinics/${r.clinics.slug}`}
-                  className="inline-flex items-center gap-1.5 text-xs bg-gray-100 text-gray-600 hover:bg-brand-50 hover:text-brand-600 px-3 py-1 rounded-full font-medium transition-colors"
+                  className="inline-flex items-center gap-1.5 text-sm bg-gray-100 text-gray-600 hover:bg-brand-50 hover:text-brand-600 px-3 py-1 rounded-full font-medium transition-colors"
                 >
                   <FontAwesomeIcon icon={faHospital} className="w-3 h-3" />
                   {r.clinics.name}
                 </Link>
               )}
               {r.treatments && (
-                <span className="inline-flex items-center gap-1.5 text-xs bg-brand-50 text-brand-600 px-3 py-1 rounded-full font-medium">
+                <span className="inline-flex items-center gap-1.5 text-sm bg-brand-50 text-brand-600 px-3 py-1 rounded-full font-medium">
                   <FontAwesomeIcon icon={faWandMagicSparkles} className="w-3 h-3" />
                   {r.treatments.name}
                 </span>
               )}
               {r.treatment_date && (
-                <span className="text-xs text-gray-400">{r.treatment_date}</span>
+                <span className="text-sm text-gray-400">{r.treatment_date}</span>
               )}
             </div>
 
-            <h1 className="text-xl font-bold text-gray-900 mb-4 leading-snug">{r.title}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4 leading-snug">{r.title}</h1>
 
             {r.rating && (
               <div className="flex items-center gap-2 mb-6">
                 <StarRating rating={r.rating} />
-                <span className="text-sm text-gray-500 font-medium">{r.rating}.0 / 5</span>
+                <span className="text-base text-gray-500 font-medium">{r.rating}.0 / 5</span>
               </div>
             )}
 
@@ -126,17 +126,17 @@ export default async function ReviewDetailPage({ params
             {/* Cost */}
             {r.cost && (
               <div className="mt-6 pt-5 border-t border-gray-100 flex items-center gap-2">
-                <span className="text-xs text-gray-400 font-medium">施術費用</span>
-                <span className="font-bold text-gray-900 text-lg">¥{r.cost.toLocaleString()}</span>
+                <span className="text-sm text-gray-400 font-medium">施術費用</span>
+                <span className="font-bold text-gray-900 text-xl">¥{r.cost.toLocaleString()}</span>
               </div>
             )}
 
             {/* Author */}
             <div className="mt-5 pt-5 border-t border-gray-100 flex items-center gap-2">
-              <div className="w-8 h-8 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 font-bold text-sm shrink-0">
+              <div className="w-8 h-8 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 font-bold text-base shrink-0">
                 {(r.profiles?.display_name ?? '?')[0].toUpperCase()}
               </div>
-              <span className="text-sm text-gray-500 font-medium">
+              <span className="text-base text-gray-500 font-medium">
                 {r.profiles?.display_name ?? '匿名'}
               </span>
             </div>

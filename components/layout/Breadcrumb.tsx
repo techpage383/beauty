@@ -8,7 +8,7 @@ export function Breadcrumb({ crumbs }: { crumbs: Crumb[] }) {
   return (
     <>
       <JsonLd data={breadcrumbSchema(crumbs)} />
-      <nav className="flex flex-wrap items-center gap-1 mb-8 text-xs text-gray-400">
+      <nav className="flex flex-wrap items-center gap-1 mb-8 text-sm text-gray-400">
         {crumbs.map((c, i) => (
           <span key={c.href} className="flex items-center gap-1">
             {i > 0 && <span className="text-gray-300">›</span>}

@@ -40,7 +40,7 @@ export default async function TreatmentsPage({
   }, {})
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
+    <div className="max-w-7xl mx-auto px-4 py-12">
       <Breadcrumb crumbs={[
         { name: 'TOP', href: '/' },
         { name: '施術一覧', href: '/treatments' },
@@ -48,15 +48,15 @@ export default async function TreatmentsPage({
 
       <div className="flex items-end justify-between mb-10">
         <div>
-          <p className="text-brand-500 text-xs font-bold tracking-widest mb-1">TREATMENTS</p>
-          <h1 className="text-2xl font-bold text-gray-900">施術一覧</h1>
+          <p className="text-brand-500 text-sm font-bold tracking-widest mb-1">TREATMENTS</p>
+          <h1 className="text-3xl font-bold text-gray-900">施術一覧</h1>
         </div>
-        <span className="text-sm text-gray-400">{count ?? 0}件</span>
+        <span className="text-base text-gray-400">{count ?? 0}件</span>
       </div>
 
       {Object.entries(byCategory).map(([cat, items]) => (
         <div key={cat} className="mb-12">
-          <h2 className="text-base font-bold text-gray-700 mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
             <span className="w-1 h-4 bg-brand-500 rounded-full inline-block" />
             {cat}
           </h2>
@@ -68,7 +68,7 @@ export default async function TreatmentsPage({
                 className="group flex items-center gap-2 bg-white border border-gray-100 rounded-xl px-4 py-3 hover:border-brand-200 hover:bg-brand-50 hover:-translate-y-0.5 transition-all"
               >
                 <FontAwesomeIcon icon={faWandMagicSparkles} className="w-3.5 h-3.5 text-brand-400 shrink-0" />
-                <p className="text-sm font-medium text-gray-700 group-hover:text-brand-700 line-clamp-1 transition-colors">
+                <p className="text-base font-medium text-gray-700 group-hover:text-brand-700 line-clamp-1 transition-colors">
                   {t!.name}
                 </p>
               </Link>

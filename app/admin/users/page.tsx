@@ -23,10 +23,10 @@ export default async function AdminUsersPage({
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-gray-900 mb-6">ユーザー管理</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">ユーザー管理</h1>
 
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-        <table className="w-full text-sm">
+        <table className="w-full text-base">
           <thead className="bg-gray-50 border-b border-gray-100">
             <tr>
               <th className="text-left px-4 py-3 font-medium text-gray-600">表示名</th>
@@ -41,16 +41,16 @@ export default async function AdminUsersPage({
             {(users as Profile[])?.map(u => (
               <tr key={u.id} className="hover:bg-gray-50 transition">
                 <td className="px-4 py-3">{u.display_name ?? '(未設定)'}</td>
-                <td className="px-4 py-3 text-gray-500 text-xs">{u.email ?? '—'}</td>
+                <td className="px-4 py-3 text-gray-500 text-sm">{u.email ?? '—'}</td>
                 <td className="px-4 py-3">
-                  <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                  <span className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${
                     u.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-600'
                   }`}>
                     {u.role}
                   </span>
                 </td>
                 <td className="px-4 py-3">
-                  <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
+                  <span className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${
                     u.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                   }`}>
                     {u.is_active ? 'アクティブ' : 'BAN済み'}

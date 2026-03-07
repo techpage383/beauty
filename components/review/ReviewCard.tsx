@@ -40,7 +40,7 @@ export function ReviewCard({ review }: { review: Review }) {
         <div className="flex items-center gap-2 mb-3 flex-wrap">
           {review.rating && <StarRating rating={review.rating} />}
           {review.clinics && (
-            <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-medium">
+            <span className="text-sm bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-medium">
               {review.clinics.name}
             </span>
           )}
@@ -50,11 +50,11 @@ export function ReviewCard({ review }: { review: Review }) {
           {review.title}
         </h3>
 
-        <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed flex-1">
+        <p className="text-base text-gray-500 line-clamp-2 leading-relaxed flex-1">
           {review.body}
         </p>
 
-        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-50 text-xs">
+        <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-50 text-sm">
           <span className="bg-brand-50 text-brand-600 px-2.5 py-1 rounded-full font-semibold">
             {review.treatments?.name ?? '施術'}
           </span>

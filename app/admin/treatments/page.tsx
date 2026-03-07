@@ -11,7 +11,7 @@ export default async function AdminTreatmentsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-gray-900">施術管理</h1>
+        <h1 className="text-2xl font-bold text-gray-900">施術管理</h1>
       </div>
       <TreatmentAdminTable treatments={treatments ?? []} />
     </div>

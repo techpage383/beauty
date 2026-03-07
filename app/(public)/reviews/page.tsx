@@ -34,7 +34,7 @@ export default async function ReviewsPage({
     .range(from, from + PER_PAGE - 1)
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
+    <div className="max-w-7xl mx-auto px-4 py-12">
       <Breadcrumb crumbs={[
         { name: 'TOP', href: '/' },
         { name: '口コミ一覧', href: '/reviews' },
@@ -42,10 +42,10 @@ export default async function ReviewsPage({
 
       <div className="flex items-end justify-between mb-10">
         <div>
-          <p className="text-brand-500 text-xs font-bold tracking-widest mb-1">REVIEWS</p>
-          <h1 className="text-2xl font-bold text-gray-900">口コミ一覧</h1>
+          <p className="text-brand-500 text-sm font-bold tracking-widest mb-1">REVIEWS</p>
+          <h1 className="text-3xl font-bold text-gray-900">口コミ一覧</h1>
         </div>
-        <span className="text-sm text-gray-400">{count ?? 0}件</span>
+        <span className="text-base text-gray-400">{count ?? 0}件</span>
       </div>
 
       {reviews?.length ? (

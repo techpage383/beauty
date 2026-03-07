@@ -36,14 +36,14 @@ export default async function AdminReviewDetailPage({
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-gray-900">口コミ詳細</h1>
+        <h1 className="text-2xl font-bold text-gray-900">口コミ詳細</h1>
         <StatusBadge status={r.status} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
-          <h2 className="font-bold text-gray-700 text-sm uppercase tracking-wide">投稿データ</h2>
-          <div className="space-y-2 text-sm">
+          <h2 className="font-bold text-gray-700 text-base uppercase tracking-wide">投稿データ</h2>
+          <div className="space-y-2 text-base">
             {rows.map(row => (
               <div key={row.label} className="flex gap-2">
                 <span className="text-gray-400 w-24 shrink-0">{row.label}</span>
@@ -56,7 +56,7 @@ export default async function AdminReviewDetailPage({
             </div>
           </div>
           {r.status === 'rejected' && r.rejected_reason && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700">
+            <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-base text-red-700">
               <strong>却下理由：</strong>{r.rejected_reason}
             </div>
           )}
@@ -66,7 +66,7 @@ export default async function AdminReviewDetailPage({
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-100 p-6">
-          <h2 className="font-bold text-gray-700 text-sm uppercase tracking-wide mb-4">プレビュー</h2>
+          <h2 className="font-bold text-gray-700 text-base uppercase tracking-wide mb-4">プレビュー</h2>
           {r.review_images && r.review_images.length > 0 && (
             <div className="flex gap-2 mb-4 flex-wrap">
               {r.review_images.map(img => (
@@ -76,14 +76,14 @@ export default async function AdminReviewDetailPage({
               ))}
             </div>
           )}
-          <h3 className="font-bold text-gray-900 text-lg mb-2">{r.title}</h3>
+          <h3 className="font-bold text-gray-900 text-xl mb-2">{r.title}</h3>
           {r.rating && (
             <div className="flex items-center gap-1 mb-3">
               <StarRating rating={r.rating} />
-              <span className="text-sm text-gray-500">{r.rating}.0</span>
+              <span className="text-base text-gray-500">{r.rating}.0</span>
             </div>
           )}
-          <p className="text-gray-700 text-sm leading-relaxed whitespace-pre-wrap">{r.body}</p>
+          <p className="text-gray-700 text-base leading-relaxed whitespace-pre-wrap">{r.body}</p>
         </div>
       </div>
     </div>

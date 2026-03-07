@@ -52,13 +52,13 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {err && (
-        <p className="text-red-600 text-sm text-center bg-red-50 border border-red-100 rounded-xl py-2.5 px-3">
+        <p className="text-red-600 text-base text-center bg-red-50 border border-red-100 rounded-xl py-2.5 px-3">
           {err}
         </p>
       )}
 
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+        <label className="block text-base font-semibold text-gray-700 mb-1.5">
           IDまたはメールアドレス
         </label>
         <input
@@ -67,19 +67,19 @@ export function LoginForm() {
           onChange={e => setIdentifier(e.target.value)}
           required
           placeholder="ニックネーム または example@email.com"
-          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors"
+          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-1.5">パスワード</label>
+        <label className="block text-base font-semibold text-gray-700 mb-1.5">パスワード</label>
         <input
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
           required
           placeholder="••••••••"
-          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors"
+          className="w-full border border-gray-200 rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors"
         />
       </div>
 

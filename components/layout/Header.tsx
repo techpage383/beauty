@@ -1,6 +1,19 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { HeaderMenu } from './HeaderMenu'
+import { MobileMenu } from './MobileMenu'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHospital, faWandMagicSparkles, faPenToSquare, faMagnifyingGlass, faNewspaper } from '@fortawesome/free-solid-svg-icons'
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
+
+const navItems: { href: string; label: string; icon: IconDefinition }[] = [
+  { href: '/clinics',    label: 'クリニック', icon: faHospital },
+  { href: '/treatments', label: '施術',       icon: faWandMagicSparkles },
+  { href: '/reviews',    label: '口コミ',     icon: faNewspaper },
+  { href: '/post/new',   label: '投稿する',   icon: faPenToSquare },
+  { href: '/reviews',    label: '検索',       icon: faMagnifyingGlass },
+]
 
 export async function Header() {
   const supabase = await createClient()
@@ -17,34 +30,50 @@ export async function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
-      <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 group">
-          <span className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white text-xs font-black group-hover:bg-brand-700 transition-colors">
-            TL
-          </span>
-          <span className="font-bold text-lg text-gray-900 group-hover:text-brand-700 transition-colors">
-            True Log
-          </span>
+    <header className="sticky top-0 z-50 bg-white border-b-2 border-brand-600 shadow-sm">
+      <div className="max-w-screen-xl mx-auto px-4 h-20 flex items-center">
+
+        {/* Logo — filled brand button */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 bg-brand-700 hover:bg-brand-800 transition-colors text-white font-bold text-lg px-5 py-2.5 rounded-xl shrink-0"
+        >
+          <Image src="/logo.svg" alt="Be Voice" width={22} height={22} className="shrink-0 brightness-0 invert" />
+          Be Voice
         </Link>
 
-        <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
-          {[
-            { href: '/clinics',    label: 'クリニック' },
-            { href: '/treatments', label: '施術' },
-            { href: '/reviews',    label: '口コミ' },
-          ].map(({ href, label }) => (
+        {/* Spacer left — desktop only */}
+        <div className="hidden lg:flex flex-1" />
+
+        {/* Nav items — desktop centered, icon + label */}
+        <nav className="hidden lg:flex items-stretch h-20 border-l border-r border-gray-200">
+          {navItems.map(item => (
             <Link
-              key={href}
-              href={href}
-              className="px-3 py-2 rounded-lg text-gray-600 hover:text-brand-600 hover:bg-brand-50 transition-all"
+              key={item.label}
+              href={item.href}
+              className="flex flex-col items-center justify-center gap-1.5 px-6 border-r border-gray-200 last:border-r-0 text-brand-700 hover:bg-brand-50 transition-colors group"
             >
-              {label}
+              <FontAwesomeIcon icon={item.icon} className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span className="text-xs font-semibold text-gray-600 group-hover:text-brand-700 whitespace-nowrap">
+                {item.label}
+              </span>
             </Link>
           ))}
         </nav>
 
-        <HeaderMenu user={user} profile={profile} />
+        {/* Spacer right — desktop only */}
+        <div className="hidden lg:flex flex-1" />
+
+        {/* User actions — desktop */}
+        <div className="hidden lg:flex">
+          <HeaderMenu user={user} profile={profile} />
+        </div>
+
+        {/* Mobile: user actions + hamburger */}
+        <div className="flex lg:hidden items-center gap-2 ml-auto">
+          <HeaderMenu user={user} profile={profile} />
+          <MobileMenu />
+        </div>
       </div>
     </header>
   )

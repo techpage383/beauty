@@ -35,7 +35,7 @@ export function UserActions({ user }: { user: Profile }) {
       <button
         onClick={toggleBan}
         disabled={loading}
-        className={`text-xs px-2 py-1 rounded-lg transition ${
+        className={`text-sm px-2 py-1 rounded-lg transition ${
           user.is_active
             ? 'text-red-600 hover:bg-red-50'
             : 'text-green-600 hover:bg-green-50'
@@ -46,7 +46,7 @@ export function UserActions({ user }: { user: Profile }) {
       <button
         onClick={toggleAdmin}
         disabled={loading}
-        className="text-xs px-2 py-1 rounded-lg text-purple-600 hover:bg-purple-50 transition"
+        className="text-sm px-2 py-1 rounded-lg text-purple-600 hover:bg-purple-50 transition"
       >
         {user.role === 'admin' ? '管理者解除' : '管理者化'}
       </button>

@@ -57,48 +57,48 @@ export function EditReviewForm({ review, clinics, treatments }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-white rounded-2xl border border-gray-100 p-6">
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-red-500 text-base">{error}</p>}
       {review.rejected_reason && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-red-700">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-base text-red-700">
           <strong>却下理由：</strong> {review.rejected_reason}
         </div>
       )}
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">クリニック</label>
+        <label className="block text-base font-medium text-gray-700 mb-1">クリニック</label>
         <select value={clinicId} onChange={e => setClinicId(e.target.value)}
-          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400">
+          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400">
           <option value="">選択してください</option>
           {clinics.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">施術</label>
+        <label className="block text-base font-medium text-gray-700 mb-1">施術</label>
         <select value={treatmentId} onChange={e => setTreatmentId(e.target.value)}
-          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400">
+          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400">
           <option value="">選択してください</option>
           {treatments.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">タイトル <span className="text-red-500">*</span></label>
+        <label className="block text-base font-medium text-gray-700 mb-1">タイトル <span className="text-red-500">*</span></label>
         <input type="text" value={title} onChange={e => setTitle(e.target.value)}
-          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
+          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400" />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-base font-medium text-gray-700 mb-1">
           口コミ本文 <span className="text-red-500">*</span>
-          <span className={`ml-2 text-xs ${body.length > 300 ? 'text-red-500' : 'text-gray-400'}`}>{body.length} / 300文字</span>
+          <span className={`ml-2 text-sm ${body.length > 300 ? 'text-red-500' : 'text-gray-400'}`}>{body.length} / 300文字</span>
         </label>
         <textarea value={body} onChange={e => setBody(e.target.value)} rows={5}
-          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none" />
+          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none" />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">評価</label>
+        <label className="block text-base font-medium text-gray-700 mb-1">評価</label>
         <div className="flex gap-2">
           {[1,2,3,4,5].map(v => (
             <button key={v} type="button" onClick={() => setRating(v)}
@@ -111,14 +111,14 @@ export function EditReviewForm({ review, clinics, treatments }: Props) {
 
       <div className="flex gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">施術日</label>
+          <label className="block text-base font-medium text-gray-700 mb-1">施術日</label>
           <input type="month" value={date} onChange={e => setDate(e.target.value)}
-            className="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
+            className="border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">費用（円）</label>
+          <label className="block text-base font-medium text-gray-700 mb-1">費用（円）</label>
           <input type="number" value={cost} onChange={e => setCost(e.target.value)} min="0"
-            className="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
+            className="border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400" />
         </div>
       </div>
 

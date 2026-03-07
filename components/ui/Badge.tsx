@@ -16,7 +16,7 @@ const STATUS_COLORS: Record<ReviewStatus, string> = {
 
 export function StatusBadge({ status }: { status: ReviewStatus }) {
   return (
-    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[status]}`}>
+    <span className={`inline-block px-2 py-0.5 rounded-full text-sm font-medium ${STATUS_COLORS[status]}`}>
       {STATUS_LABELS[status]}
     </span>
   )

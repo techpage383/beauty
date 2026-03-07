@@ -19,27 +19,27 @@ export function Pagination({ page, total, perPage = 15, basePath }: Props) {
       {page > 1 ? (
         <Link
           href={`${base}${sep}page=${page - 1}`}
-          className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-brand-300 hover:text-brand-600 transition-all"
+          className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-base font-medium text-gray-600 hover:border-brand-300 hover:text-brand-600 transition-all"
         >
           ← 前へ
         </Link>
       ) : (
-        <span className="px-4 py-2 rounded-xl text-sm text-gray-300 cursor-not-allowed">← 前へ</span>
+        <span className="px-4 py-2 rounded-xl text-base text-gray-300 cursor-not-allowed">← 前へ</span>
       )}
 
-      <span className="px-4 py-2 text-sm text-gray-500 bg-white border border-gray-100 rounded-xl">
+      <span className="px-4 py-2 text-base text-gray-500 bg-white border border-gray-100 rounded-xl">
         {page} / {totalPages}
       </span>
 
       {page < totalPages ? (
         <Link
           href={`${base}${sep}page=${page + 1}`}
-          className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-brand-300 hover:text-brand-600 transition-all"
+          className="px-4 py-2 bg-white border border-gray-200 rounded-xl text-base font-medium text-gray-600 hover:border-brand-300 hover:text-brand-600 transition-all"
         >
           次へ →
         </Link>
       ) : (
-        <span className="px-4 py-2 rounded-xl text-sm text-gray-300 cursor-not-allowed">次へ →</span>
+        <span className="px-4 py-2 rounded-xl text-base text-gray-300 cursor-not-allowed">次へ →</span>
       )}
     </nav>
   )

@@ -72,7 +72,8 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
         .select('id, slug')
         .single()
 
-      if (reviewErr || !review) throw reviewErr
+      if (reviewErr) throw new Error(reviewErr.message)
+      if (!review) throw new Error('投稿に失敗しました。ログイン状態を確認してください。')
 
       // 2. Upload images
       for (let i = 0; i < blobs.length; i++) {
@@ -100,15 +101,15 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-white rounded-2xl border border-gray-100 p-6">
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && <p className="text-red-500 text-base">{error}</p>}
 
       {/* Clinic */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">クリニック</label>
+        <label className="block text-base font-medium text-gray-700 mb-1">クリニック</label>
         <select
           value={clinicId}
           onChange={e => setClinicId(e.target.value)}
-          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400"
         >
           <option value="">選択してください</option>
           {clinics.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -117,11 +118,11 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
 
       {/* Treatment */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">施術</label>
+        <label className="block text-base font-medium text-gray-700 mb-1">施術</label>
         <select
           value={treatmentId}
           onChange={e => setTreatmentId(e.target.value)}
-          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400"
         >
           <option value="">選択してください</option>
           {treatments.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
@@ -130,21 +131,21 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
 
       {/* Title */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">タイトル <span className="text-red-500">*</span></label>
+        <label className="block text-base font-medium text-gray-700 mb-1">タイトル <span className="text-red-500">*</span></label>
         <input
           type="text"
           value={title}
           onChange={e => setTitle(e.target.value)}
           placeholder="例: 二重整形でナチュラルな仕上がりに"
-          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400"
         />
       </div>
 
       {/* Body */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-base font-medium text-gray-700 mb-1">
           口コミ本文 <span className="text-red-500">*</span>
-          <span className={`ml-2 text-xs ${body.length > 300 ? 'text-red-500' : 'text-gray-400'}`}>
+          <span className={`ml-2 text-sm ${body.length > 300 ? 'text-red-500' : 'text-gray-400'}`}>
             {body.length} / 300文字
           </span>
         </label>
@@ -153,20 +154,20 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
           onChange={e => setBody(e.target.value)}
           rows={5}
           placeholder="施術の感想、クリニックの雰囲気、スタッフの対応など"
-          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none"
+          className="w-full border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none"
         />
       </div>
 
       {/* Rating */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">評価 <span className="text-red-500">*</span></label>
+        <label className="block text-base font-medium text-gray-700 mb-1">評価 <span className="text-red-500">*</span></label>
         <div className="flex gap-2">
           {[1, 2, 3, 4, 5].map(v => (
             <button
               key={v}
               type="button"
               onClick={() => setRating(v)}
-              className={`text-2xl transition ${v <= rating ? 'text-yellow-400' : 'text-gray-200 hover:text-yellow-200'}`}
+              className={`text-3xl transition ${v <= rating ? 'text-yellow-400' : 'text-gray-200 hover:text-yellow-200'}`}
             >
               <FontAwesomeIcon icon={v <= rating ? faStar : faStarRegular} className="w-6 h-6" />
             </button>
@@ -176,31 +177,31 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
 
       {/* Date */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">施術日（年月）</label>
+        <label className="block text-base font-medium text-gray-700 mb-1">施術日（年月）</label>
         <input
           type="month"
           value={date}
           onChange={e => setDate(e.target.value)}
-          className="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+          className="border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400"
         />
       </div>
 
       {/* Cost */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">費用（円）</label>
+        <label className="block text-base font-medium text-gray-700 mb-1">費用（円）</label>
         <input
           type="number"
           value={cost}
           onChange={e => setCost(e.target.value)}
           placeholder="30000"
           min="0"
-          className="border border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+          className="border border-gray-200 rounded-xl px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400"
         />
       </div>
 
       {/* Images */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-base font-medium text-gray-700 mb-1">
           写真（最大5枚・各5MB以内）
         </label>
         <input
@@ -214,7 +215,7 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
-          className="border-2 border-dashed border-gray-200 rounded-xl px-6 py-4 text-sm text-gray-400 hover:border-brand-400 hover:text-brand-500 transition w-full"
+          className="border-2 border-dashed border-gray-200 rounded-xl px-6 py-4 text-base text-gray-400 hover:border-brand-400 hover:text-brand-500 transition w-full"
         >
           + 画像を選択 (.jpg / .png / .heic)
         </button>
