@@ -40,14 +40,14 @@ export function ClinicAdminTable({ clinics: initial }: { clinics: Clinic[] }) {
     <div>
       <button
         onClick={() => setAdding(a => !a)}
-        className="mb-4 bg-gray-900 text-white px-4 py-2 rounded-xl text-base font-medium hover:bg-gray-700 transition"
+        className="mb-4 bg-brand-600 text-white px-4 py-2 rounded-xl text-base font-medium hover:bg-brand-700 transition"
       >
         + クリニックを追加
       </button>
 
       {adding && (
         <div className="bg-white border border-gray-100 rounded-2xl p-5 mb-4 space-y-3">
-          {error && <p className="text-red-500 text-base">{error}</p>}
+          {error && <p className="text-rose-400 text-base">{error}</p>}
           {[
             { key: 'slug',        label: 'スラッグ（URL用 英数字-）', placeholder: 'shonan-beauty-shinjuku' },
             { key: 'name',        label: '名前', placeholder: '湘南美容クリニック 新宿院' },
@@ -102,7 +102,7 @@ export function ClinicAdminTable({ clinics: initial }: { clinics: Clinic[] }) {
                   </button>
                 </td>
                 <td className="px-4 py-3">
-                  <button onClick={() => remove(c.id)} className="text-sm text-red-400 hover:text-red-600 transition">削除</button>
+                  <button onClick={() => remove(c.id)} className="text-sm text-rose-400 hover:text-rose-500 transition">削除</button>
                 </td>
               </tr>
             ))}

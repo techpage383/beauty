@@ -4,7 +4,7 @@ import { LoginForm } from '@/components/auth/LoginForm'
 
 export const metadata: Metadata = {
   title: 'ログイン',
-  description: 'True Logにログインして口コミを投稿しましょう。',
+  description: 'Be Voiceにログインして口コミを投稿しましょう。',
 }
 
 export default function LoginPage() {
@@ -16,10 +16,8 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="flex justify-center mb-8">
             <div className="flex items-center gap-2">
-              <span className="w-9 h-9 bg-brand-600 rounded-xl flex items-center justify-center text-white text-base font-black shadow-md shadow-brand-200">
-                TL
-              </span>
-              <span className="font-bold text-2xl text-gray-900">True Log</span>
+              <img src="/logo.svg" alt="Be Voice" className="w-9 h-9" />
+              <span className="font-bold text-2xl text-brand-700">Be Voice</span>
             </div>
           </div>
 

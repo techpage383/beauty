@@ -90,9 +90,9 @@ export default async function MyPage({
     <div className="max-w-4xl mx-auto px-4 py-12">
 
       {/* Profile card */}
-      <div className="relative overflow-hidden bg-gray-950 rounded-3xl p-7 text-white mb-6">
-        <div className="absolute -top-16 -right-16 w-48 h-48 bg-brand-600 rounded-full blur-[60px] opacity-30" />
-        <div className="absolute -bottom-10 left-10 w-32 h-32 bg-pink-500 rounded-full blur-[60px] opacity-20" />
+      <div className="relative overflow-hidden bg-gradient-to-br from-brand-600 to-brand-800 rounded-3xl p-7 text-white mb-6">
+        <div className="absolute -top-16 -right-16 w-48 h-48 bg-brand-400 rounded-full blur-[60px] opacity-30" />
+        <div className="absolute -bottom-10 left-10 w-32 h-32 bg-brand-300 rounded-full blur-[60px] opacity-20" />
 
         <div className="relative flex items-center gap-4">
           <div className="w-16 h-16 rounded-2xl bg-brand-600 shadow-lg shadow-brand-900/50 overflow-hidden shrink-0 flex items-center justify-center">
@@ -159,7 +159,7 @@ export default async function MyPage({
               href={buildHref(t.value, sort)}
               className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${
                 status === t.value
-                  ? 'bg-gray-900 text-white'
+                  ? 'bg-brand-600 text-white'
                   : 'bg-white border border-gray-200 text-gray-500 hover:bg-gray-50'
               }`}
             >
@@ -216,7 +216,7 @@ export default async function MyPage({
                   <p className="font-semibold text-gray-900 truncate">{r.title}</p>
                   {r.rating && <div className="mt-1.5"><StarRating rating={r.rating} /></div>}
                   {r.status === 'rejected' && r.rejected_reason && (
-                    <p className="text-sm text-red-500 mt-2 bg-red-50 px-3 py-1.5 rounded-xl">
+                    <p className="text-sm text-rose-400 mt-2 bg-rose-50 px-3 py-1.5 rounded-xl">
                       却下理由: {r.rejected_reason}
                     </p>
                   )}

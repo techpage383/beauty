@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faGear, faRightFromBracket, faChevronDown } from '@fortawesome/free-solid-svg-icons'
@@ -9,7 +10,7 @@ import type { User } from '@supabase/supabase-js'
 
 interface Props {
   user: User | null
-  profile: { display_name: string | null; role: string } | null
+  profile: { display_name: string | null; role: string; avatar_url: string | null } | null
 }
 
 export function HeaderMenu({ user, profile }: Props) {
@@ -54,16 +55,20 @@ export function HeaderMenu({ user, profile }: Props) {
 
   const initial = profile?.display_name?.charAt(0)?.toUpperCase() ?? '?'
   const name = profile?.display_name ?? 'マイページ'
+  const avatarUrl = profile?.avatar_url ?? null
 
   return (
-    <div className="relative" ref={ref}>
+    <div className="relative" ref={ref} suppressHydrationWarning>
       {/* Trigger: avatar + name */}
       <button
         onClick={() => setOpen(v => !v)}
         className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-brand-50 transition-colors group"
       >
-        <span className="w-8 h-8 bg-brand-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">
-          {initial}
+        <span className="w-8 h-8 rounded-full overflow-hidden shrink-0 bg-brand-600 flex items-center justify-center text-sm font-bold text-white">
+          {avatarUrl
+            ? <Image src={avatarUrl} alt={name} width={32} height={32} className="w-full h-full object-cover" unoptimized />
+            : initial
+          }
         </span>
         <span className="hidden sm:inline text-sm font-semibold text-gray-700 group-hover:text-brand-700 max-w-[8rem] truncate">
           {name}
@@ -76,11 +81,14 @@ export function HeaderMenu({ user, profile }: Props) {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50">
+        <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50" suppressHydrationWarning>
           {/* User info header */}
           <div className="px-4 py-3 border-b border-gray-100 flex items-center gap-3">
-            <span className="w-9 h-9 bg-brand-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">
-              {initial}
+            <span className="w-9 h-9 rounded-full overflow-hidden shrink-0 bg-brand-600 flex items-center justify-center text-sm font-bold text-white">
+              {avatarUrl
+                ? <Image src={avatarUrl} alt={name} width={36} height={36} className="w-full h-full object-cover" unoptimized />
+                : initial
+              }
             </span>
             <div className="min-w-0">
               <p className="text-sm font-bold text-gray-800 truncate">{name}</p>
@@ -115,7 +123,7 @@ export function HeaderMenu({ user, profile }: Props) {
           <div className="border-t border-gray-100 py-1.5">
             <button
               onClick={signOut}
-              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-rose-400 hover:bg-rose-50 transition-colors"
             >
               <FontAwesomeIcon icon={faRightFromBracket} className="w-4 h-4" />
               ログアウト

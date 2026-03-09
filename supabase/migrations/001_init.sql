@@ -177,6 +177,12 @@ CREATE POLICY "Admins manage all review images" ON public.review_images FOR ALL 
   EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin')
 );
 
--- ─── STORAGE BUCKET ─────────────────────────────────────────
--- Run this in Supabase dashboard > Storage, or via API:
+-- ─── STORAGE BUCKETS ─────────────────────────────────────────
+-- Run this in Supabase SQL Editor:
 -- INSERT INTO storage.buckets (id, name, public) VALUES ('reviews', 'reviews', true);
+-- INSERT INTO storage.buckets (id, name, public) VALUES ('avatars', 'avatars', true);
+
+-- Storage RLS for avatars bucket:
+-- CREATE POLICY "Users can upload own avatar" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'avatars' AND name = 'avatars/' || auth.uid() || '.webp');
+-- CREATE POLICY "Users can update own avatar" ON storage.objects FOR UPDATE TO authenticated USING (bucket_id = 'avatars' AND name = 'avatars/' || auth.uid() || '.webp');
+-- CREATE POLICY "Public read avatars" ON storage.objects FOR SELECT TO public USING (bucket_id = 'avatars');

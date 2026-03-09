@@ -40,14 +40,14 @@ export function TreatmentAdminTable({ treatments: initial }: { treatments: Treat
     <div>
       <button
         onClick={() => setAdding(a => !a)}
-        className="mb-4 bg-gray-900 text-white px-4 py-2 rounded-xl text-base font-medium hover:bg-gray-700 transition"
+        className="mb-4 bg-brand-600 text-white px-4 py-2 rounded-xl text-base font-medium hover:bg-brand-700 transition"
       >
         + 施術を追加
       </button>
 
       {adding && (
         <div className="bg-white border border-gray-100 rounded-2xl p-5 mb-4 space-y-3">
-          {error && <p className="text-red-500 text-base">{error}</p>}
+          {error && <p className="text-rose-400 text-base">{error}</p>}
           {[
             { key: 'slug',     label: 'スラッグ（URL用）', placeholder: 'double-eyelid-maibotsuho' },
             { key: 'name',     label: '施術名', placeholder: '二重整形（埋没法）' },
@@ -98,7 +98,7 @@ export function TreatmentAdminTable({ treatments: initial }: { treatments: Treat
                   </button>
                 </td>
                 <td className="px-4 py-3">
-                  <button onClick={() => remove(t.id)} className="text-sm text-red-400 hover:text-red-600 transition">削除</button>
+                  <button onClick={() => remove(t.id)} className="text-sm text-rose-400 hover:text-rose-500 transition">削除</button>
                 </td>
               </tr>
             ))}

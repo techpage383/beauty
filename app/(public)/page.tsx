@@ -1,11 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { ReviewCard } from '@/components/review/ReviewCard'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserPlus, faPenToSquare, faShareNodes, faHospital, faWandMagicSparkles, faArrowRight } from '@fortawesome/free-solid-svg-icons'
-import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
-import type { Review } from '@/lib/supabase/types'
+import { faArrowRight, faShieldHalved, faStar, faFileLines } from '@fortawesome/free-solid-svg-icons'
 
 export const revalidate = 3600
 
@@ -14,224 +11,215 @@ export const metadata: Metadata = {
   description: '実際に受けた美容医療の施術体験をシェア。クリニック・施術の口コミを探すならBe Voice。',
 }
 
+const painPoints = [
+  '美容医療を検討しているけど、どの情報が本当か分からない',
+  '口コミサイトの総評点だけでは、判断する材料が足りない',
+  'ポジティブな声は多いのに、リアルなネガティブ体験談が見つからない',
+  '後悔しない選択をしたいのに、信頼できる声が少なすぎる',
+  '施術前のリアルな経過を、誰かと静かに共有したい',
+]
+
+const brandSteps = [
+  { label: 'STEP 1', key: 'B', title: 'Before', desc: '施術前——施術前の人のために' },
+  { label: 'STEP 2', key: 'V', title: 'Beauty × Voice', desc: '美容 × 声——体験に関する体験の声を集め、共有' },
+  { label: 'STEP 3', key: 'e', title: 'Best', desc: '選択——最善な選択を導く' },
+  { label: 'GOAL',   key: 'V', title: 'Better', desc: 'より良い——より良い人生にしていただく' },
+]
+
+const features = [
+  { num: '01', icon: faFileLines,    title: '充実的な施術スペック',    desc: 'クリニック名、術式、金額、術前の悩みなど、実際の詳細情報を細かに記録。' },
+  { num: '02', icon: faStar,         title: '6視点の応援スコア',       desc: '医師・技術・カウンセリング品質・アフターケアなど、6つの観点を1〜5点で評価。' },
+  { num: '03', icon: faFileLines,    title: '500文字以上の自由記述',   desc: '通った理由・術前術後の体験・仕上がりのギャップ・医療者へのアドバイスを丁寧に記述。' },
+  { num: '04', icon: faShieldHalved, title: '証拠資料による認証バッジ', desc: '施術に対する画像の添付（住所・来院情報）で「認証済」バッジを付与、信頼性担保。' },
+]
+
 export default async function HomePage() {
   const supabase = await createClient()
 
   const [
-    { data: reviews },
-    { data: clinics },
-    { data: treatments },
     { count: reviewCount },
     { count: clinicCount },
+    { count: treatmentCount },
   ] = await Promise.all([
-    supabase.from('reviews').select('*, profiles(display_name), clinics(name), treatments(name), review_images(*)').eq('status', 'approved').order('published_at', { ascending: false }).limit(6),
-    supabase.from('clinics').select('*').eq('is_published', true).limit(8),
-    supabase.from('treatments').select('*').eq('is_published', true).limit(8),
     supabase.from('reviews').select('*', { count: 'exact', head: true }).eq('status', 'approved'),
     supabase.from('clinics').select('*', { count: 'exact', head: true }).eq('is_published', true),
+    supabase.from('treatments').select('*', { count: 'exact', head: true }).eq('is_published', true),
   ])
-
-  const steps: { step: string; icon: IconDefinition; title: string; desc: string }[] = [
-    { step: '01', icon: faUserPlus,     title: '無料登録',   desc: 'メールアドレスとパスワードで今すぐ始められます。' },
-    { step: '02', icon: faPenToSquare,  title: '施術を投稿', desc: 'クリニック・施術・費用・評価を入力して口コミを作成。' },
-    { step: '03', icon: faShareNodes,   title: '公開・シェア', desc: '審査後に口コミが公開され、同じ悩みを持つ方の参考に。' },
-  ]
 
   return (
     <>
       {/* ── Hero ─────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gray-950 text-white">
-        <div className="absolute -top-32 -left-32 w-[600px] h-[600px] bg-brand-700 rounded-full blur-[120px] opacity-20 pointer-events-none" />
-        <div className="absolute -bottom-24 -right-24 w-[500px] h-[500px] bg-pink-600 rounded-full blur-[120px] opacity-15 pointer-events-none" />
-
-        <div className="relative max-w-6xl mx-auto px-4 pt-28 pb-32 text-center">
-          <span className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-pink-300 text-sm font-semibold px-4 py-1.5 rounded-full mb-8 backdrop-blur-sm">
-            <span className="w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse" />
-            美容医療の口コミプラットフォーム
+      <section className="bg-gray-50 py-24 px-4">
+        <div className="max-w-3xl mx-auto text-center">
+          <span className="inline-flex items-center gap-2 bg-brand-50 border border-brand-100 text-brand-600 text-xs font-bold px-4 py-1.5 rounded-full mb-8 tracking-widest uppercase">
+            美容医療 × 体験口コミプラットフォーム
           </span>
 
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight tracking-tight">
-            リアルな施術体験を<br />
-            <span className="text-gradient">シェアしよう</span>
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight mb-6">
+            美容を考えるあなたに、<br />
+            リアルな声を。
           </h1>
 
-          <p className="text-gray-400 text-xl md:text-2xl mb-10 max-w-2xl mx-auto leading-relaxed">
-            実際に受けた美容医療の感想・費用・クリニックの評価を<br className="hidden md:block" />
-            投稿・検索できます
+          <p className="text-gray-500 text-base md:text-lg leading-relaxed mb-3">
+            Be Voiceは、美容（Beauty）に関する体験の声（Voice）を
+          </p>
+          <p className="text-gray-500 text-base md:text-lg leading-relaxed mb-3">
+            施術前（Before）の人のために整到し、
+          </p>
+          <p className="text-gray-500 text-base md:text-lg leading-relaxed mb-10">
+            ユーザーが最善（Best）な選択をするのを助け、<br />
+            より良い人生（Better）にしていただく情報基盤です。
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-20">
+          <div className="flex flex-wrap justify-center gap-3">
             <Link
               href="/reviews"
-              className="bg-brand-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-brand-500 shadow-xl shadow-brand-900/40 transition-all hover:-translate-y-0.5 active:translate-y-0 inline-flex items-center justify-center gap-2"
+              className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-700 text-white px-8 py-3.5 rounded-xl font-semibold text-base transition-colors"
             >
-              口コミを探す
-              <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4" />
+              Be Voiceについて知る
             </Link>
             <Link
-              href="/register"
-              className="bg-white/10 border border-white/20 text-white px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-white/20 backdrop-blur-sm transition-all hover:-translate-y-0.5 active:translate-y-0"
+              href="/reviews"
+              className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-8 py-3.5 rounded-xl font-semibold text-base transition-colors"
             >
-              無料で登録する
+              体験ログを見る
             </Link>
           </div>
 
-          {/* stats */}
-          <div className="flex flex-wrap justify-center gap-12 pt-8 border-t border-white/10">
+          {/* Stats */}
+          <div className="flex flex-wrap justify-center gap-12 mt-16 pt-10 border-t border-gray-200">
             {[
               { value: reviewCount ?? 0, label: '口コミ件数' },
               { value: clinicCount ?? 0, label: 'クリニック' },
-              { value: treatments?.length ?? 0, label: '施術カテゴリ' },
+              { value: treatmentCount ?? 0, label: '施術カテゴリ' },
             ].map(s => (
               <div key={s.label} className="text-center">
-                <p className="text-5xl font-bold text-white">
-                  {s.value.toLocaleString()}
-                  <span className="text-brand-400 text-3xl">+</span>
+                <p className="text-4xl font-bold text-gray-900">
+                  {s.value.toLocaleString()}<span className="text-brand-500 text-2xl">+</span>
                 </p>
-                <p className="text-base text-gray-400 mt-1">{s.label}</p>
+                <p className="text-sm text-gray-400 mt-1">{s.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── How it works ─────────────────────────────────── */}
+      {/* ── Pain Points ──────────────────────────────────── */}
+      <section className="bg-white py-24 px-4">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-12">
+            こんな気持ち、ありませんか？
+          </h2>
+          <ul className="space-y-5">
+            {painPoints.map((p, i) => (
+              <li key={i} className="flex items-start gap-4 text-gray-600 text-base border-b border-gray-100 pb-5 last:border-0">
+                <span className="text-gray-300 font-bold mt-0.5">—</span>
+                <span>{p}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-center text-gray-800 font-semibold text-base mt-10">
+            Be Voiceは、そんな声に応えるために生まれました。
+          </p>
+        </div>
+      </section>
+
+      {/* ── Brand Name ───────────────────────────────────── */}
       <section className="bg-gray-50 py-24 px-4">
-        <div className="max-w-6xl mx-auto text-center mb-14">
-          <p className="text-brand-600 text-sm font-bold tracking-widest mb-2">HOW IT WORKS</p>
-          <h2 className="text-4xl font-bold text-gray-900">かんたん3ステップ</h2>
-        </div>
-        <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
-          {steps.map(item => (
-            <div key={item.step} className="relative bg-white rounded-3xl p-8 shadow-sm border border-gray-100 text-center hover:shadow-md hover:border-brand-100 transition-all">
-              <span className="absolute top-5 right-5 text-sm font-bold text-gray-200">{item.step}</span>
-              <div className="w-14 h-14 bg-brand-50 rounded-2xl flex items-center justify-center mx-auto mb-5">
-                <FontAwesomeIcon icon={item.icon} className="w-6 h-6 text-brand-600" />
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">サービス名に込めた想い</h2>
+          <p className="text-gray-400 text-base mb-12">Be Voice = ビーボイス</p>
+
+          <div className="grid grid-cols-2 gap-4 mb-8">
+            {brandSteps.map(s => (
+              <div key={s.label} className="bg-white border border-gray-100 rounded-2xl p-5 text-left">
+                <span className="text-xs font-bold text-brand-500 tracking-widest">{s.label}</span>
+                <p className="font-bold text-gray-900 mt-1 mb-1">{s.title}</p>
+                <p className="text-sm text-gray-500 leading-relaxed">{s.desc}</p>
               </div>
-              <h3 className="font-bold text-gray-900 text-xl mb-2">{item.title}</h3>
-              <p className="text-base text-gray-500 leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Latest Reviews ───────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-24">
-        <div className="flex items-end justify-between mb-10">
-          <div>
-            <p className="text-brand-500 text-sm font-bold tracking-widest mb-1.5">LATEST REVIEWS</p>
-            <h2 className="text-3xl font-bold text-gray-900">最新の口コミ</h2>
-          </div>
-          <Link href="/reviews" className="text-base text-gray-400 hover:text-brand-600 transition font-medium">
-            すべて見る →
-          </Link>
-        </div>
-
-        {reviews?.length ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(reviews as Review[]).map(r => <ReviewCard key={r.id} review={r} />)}
-          </div>
-        ) : (
-          <div className="bg-gray-50 border border-dashed border-gray-200 rounded-3xl py-24 text-center text-gray-400">
-            <FontAwesomeIcon icon={faPenToSquare} className="w-10 h-10 mx-auto mb-4 opacity-40" />
-            <p className="mb-5 font-medium">まだ口コミがありません</p>
-            <Link href="/post/new" className="text-base text-brand-600 hover:underline font-semibold">
-              最初の口コミを投稿する →
-            </Link>
-          </div>
-        )}
-      </section>
-
-      {/* ── Clinics ──────────────────────────────────────── */}
-      <section className="bg-gray-50 border-y border-gray-100 py-24 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-end justify-between mb-10">
-            <div>
-              <p className="text-brand-500 text-sm font-bold tracking-widest mb-1.5">CLINICS</p>
-              <h2 className="text-3xl font-bold text-gray-900">クリニック一覧</h2>
-            </div>
-            <Link href="/clinics" className="text-base text-gray-400 hover:text-brand-600 transition font-medium">
-              すべて見る →
-            </Link>
-          </div>
-
-          {clinics?.length ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {clinics.map(c => (
-                <Link
-                  key={c.id}
-                  href={`/clinics/${c.slug}`}
-                  className="group bg-white hover:bg-brand-50 border border-gray-100 hover:border-brand-200 rounded-2xl p-5 text-center transition-all hover:-translate-y-0.5 hover:shadow-md"
-                >
-                  <div className="w-11 h-11 bg-brand-50 group-hover:bg-brand-100 rounded-xl flex items-center justify-center mx-auto mb-3 transition-colors">
-                    <FontAwesomeIcon icon={faHospital} className="w-5 h-5 text-brand-500" />
-                  </div>
-                  <p className="text-base font-semibold text-gray-800 group-hover:text-brand-700 line-clamp-2 leading-snug transition-colors">
-                    {c.name}
-                  </p>
-                  {c.address && (
-                    <p className="text-sm text-gray-400 mt-1.5 truncate">{c.address}</p>
-                  )}
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="text-center text-gray-400 py-12">クリニックが登録されていません</p>
-          )}
-        </div>
-      </section>
-
-      {/* ── Treatments ───────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 py-24">
-        <div className="flex items-end justify-between mb-10">
-          <div>
-            <p className="text-brand-500 text-sm font-bold tracking-widest mb-1.5">TREATMENTS</p>
-            <h2 className="text-3xl font-bold text-gray-900">施術カテゴリ</h2>
-          </div>
-          <Link href="/treatments" className="text-base text-gray-400 hover:text-brand-600 transition font-medium">
-            すべて見る →
-          </Link>
-        </div>
-
-        {treatments?.length ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {treatments.map(t => (
-              <Link
-                key={t.id}
-                href={`/treatments/${t.slug}`}
-                className="group flex items-center gap-3 bg-white hover:bg-gradient-to-r hover:from-brand-50 hover:to-pink-50 border border-gray-100 hover:border-brand-200 rounded-2xl px-5 py-4 transition-all hover:-translate-y-0.5"
-              >
-                <FontAwesomeIcon icon={faWandMagicSparkles} className="w-4 h-4 text-brand-400 shrink-0" />
-                <p className="text-base font-semibold text-gray-700 group-hover:text-brand-700 line-clamp-1 transition-colors">
-                  {t.name}
-                </p>
-              </Link>
             ))}
           </div>
-        ) : (
-          <p className="text-center text-gray-400 py-12">施術が登録されていません</p>
-        )}
+
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 text-left">
+            <p className="text-gray-700 text-base leading-relaxed mb-2">
+              Be Voiceは、単なる口コミサイトではありません。
+            </p>
+            <p className="text-gray-500 text-sm leading-relaxed">
+              実際に施術を共有してくれる体験情報資産として整理し、ユーザーが後悔のない選択をするための信頼できる情報基盤です。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Features ─────────────────────────────────────── */}
+      <section className="bg-white py-24 px-4">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3">
+            &ldquo;信頼できる体験口コミ&rdquo;のための設計
+          </h2>
+          <p className="text-gray-400 text-base text-center mb-12">
+            Be Voiceは、口コミの質を守るため、以下の形で体験を記録します。
+          </p>
+          <div className="space-y-6">
+            {features.map(f => (
+              <div key={f.num} className="flex gap-5 items-start">
+                <span className="shrink-0 w-10 h-10 bg-brand-50 rounded-xl flex items-center justify-center">
+                  <FontAwesomeIcon icon={f.icon} className="w-4 h-4 text-brand-600" />
+                </span>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-bold text-brand-400">{f.num}</span>
+                    <h3 className="font-bold text-gray-900 text-base">{f.title}</h3>
+                  </div>
+                  <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 重要事項 ─────────────────────────────────────── */}
+      <section className="bg-gray-50 border-y border-gray-100 py-12 px-4">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">重要事項</p>
+          <ul className="space-y-2 text-sm text-gray-500 leading-relaxed">
+            <li>・Be Voiceは、医療行為の評価・診断・処方を行うものではありません。</li>
+            <li>・掲載の情報・クリニック情報・医師名などは参考目的のみです。</li>
+            <li>・掲載された内容は、あくまで個人の主観的な施術の体験であり、医学的・法律的な判断材料として使用することはできません。</li>
+            <li>・専門家に関するご相談は、必ず資格のある医療機関にご相談ください。</li>
+          </ul>
+          <p className="text-xs text-gray-400 mt-5">
+            Be Voiceは、そんな声に応えるために生まれました。
+          </p>
+        </div>
       </section>
 
       {/* ── CTA Banner ───────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gray-950 py-24 px-4">
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-900/60 via-gray-950 to-pink-950/40 pointer-events-none" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-600 rounded-full blur-[100px] opacity-10 pointer-events-none" />
-        <div className="relative max-w-3xl mx-auto text-center text-white">
-          <p className="text-brand-400 text-sm font-bold tracking-widest mb-4">JOIN BE VOICE</p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-            あなたの体験を<br />シェアしませんか？
-          </h2>
-          <p className="text-gray-400 mb-10 text-xl leading-relaxed">
-            施術の感想が、同じ悩みを持つ人の役に立ちます
+      <section className="bg-white py-24 px-4 border-t border-gray-100">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-gray-400 text-sm mb-6">
+            Be Voiceは今、体験を共有してくれる仲間を募集しています。<br />
+            あなたのリアルな声が、次に悩む誰かの力になります。
           </p>
-          <Link
-            href="/post/new"
-            className="inline-flex items-center gap-2 bg-brand-600 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:bg-brand-500 shadow-xl shadow-brand-900/50 transition-all hover:-translate-y-0.5"
-          >
-            口コミを投稿する
-            <FontAwesomeIcon icon={faArrowRight} className="w-4 h-4" />
-          </Link>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-10 leading-tight">
+            あなたの声が、<br />誰かの安心になる。
+          </h2>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="/post/new"
+              className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-700 text-white px-8 py-3.5 rounded-xl font-semibold text-base transition-colors"
+            >
+              体験口コミを投稿する
+              <FontAwesomeIcon icon={faArrowRight} className="w-3.5 h-3.5" />
+            </Link>
+            <Link
+              href="/reviews"
+              className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 px-8 py-3.5 rounded-xl font-semibold text-base transition-colors"
+            >
+              体験ログを見る
+            </Link>
+          </div>
         </div>
       </section>
     </>

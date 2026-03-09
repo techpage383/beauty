@@ -4,15 +4,15 @@ import { createClient } from '@/lib/supabase/server'
 import { HeaderMenu } from './HeaderMenu'
 import { MobileMenu } from './MobileMenu'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHospital, faWandMagicSparkles, faPenToSquare, faMagnifyingGlass, faNewspaper } from '@fortawesome/free-solid-svg-icons'
+import { faHospital, faPenToSquare, faNewspaper, faUserDoctor } from '@fortawesome/free-solid-svg-icons'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 
 const navItems: { href: string; label: string; icon: IconDefinition }[] = [
-  { href: '/clinics',    label: 'クリニック', icon: faHospital },
-  { href: '/treatments', label: '施術',       icon: faWandMagicSparkles },
-  { href: '/reviews',    label: '口コミ',     icon: faNewspaper },
-  { href: '/post/new',   label: '投稿する',   icon: faPenToSquare },
-  { href: '/reviews',    label: '検索',       icon: faMagnifyingGlass },
+  { href: '/about',    label: 'Be Voiceとは', icon: faNewspaper },
+  { href: '/reviews',  label: '口コミを見る', icon: faNewspaper },
+  { href: '/doctors',  label: '医師情報',     icon: faUserDoctor },
+  { href: '/clinics',  label: 'クリニック',   icon: faHospital },
+  { href: '/post/new', label: '投稿する',     icon: faPenToSquare },
 ]
 
 export async function Header() {
@@ -23,7 +23,7 @@ export async function Header() {
   if (user) {
     const { data } = await supabase
       .from('profiles')
-      .select('display_name, role')
+      .select('display_name, role, avatar_url')
       .eq('id', user.id)
       .single()
     profile = data
@@ -33,7 +33,7 @@ export async function Header() {
     <header className="sticky top-0 z-50 bg-white border-b-2 border-brand-600 shadow-sm">
       <div className="max-w-screen-xl mx-auto px-4 h-20 flex items-center">
 
-        {/* Logo — filled brand button */}
+        {/* Logo */}
         <Link
           href="/"
           className="flex items-center gap-2 bg-brand-700 hover:bg-brand-800 transition-colors text-white font-bold text-lg px-5 py-2.5 rounded-xl shrink-0"
@@ -42,16 +42,16 @@ export async function Header() {
           Be Voice
         </Link>
 
-        {/* Spacer left — desktop only */}
+        {/* Spacer left */}
         <div className="hidden lg:flex flex-1" />
 
-        {/* Nav items — desktop centered, icon + label */}
+        {/* Nav — desktop */}
         <nav className="hidden lg:flex items-stretch h-20 border-l border-r border-gray-200">
           {navItems.map(item => (
             <Link
               key={item.label}
               href={item.href}
-              className="flex flex-col items-center justify-center gap-1.5 px-6 border-r border-gray-200 last:border-r-0 text-brand-700 hover:bg-brand-50 transition-colors group"
+              className="flex flex-col items-center justify-center gap-1.5 w-24 border-r border-gray-200 last:border-r-0 text-brand-700 hover:bg-brand-50 transition-colors group"
             >
               <FontAwesomeIcon icon={item.icon} className="w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="text-xs font-semibold text-gray-600 group-hover:text-brand-700 whitespace-nowrap">
@@ -61,7 +61,7 @@ export async function Header() {
           ))}
         </nav>
 
-        {/* Spacer right — desktop only */}
+        {/* Spacer right */}
         <div className="hidden lg:flex flex-1" />
 
         {/* User actions — desktop */}
@@ -69,8 +69,8 @@ export async function Header() {
           <HeaderMenu user={user} profile={profile} />
         </div>
 
-        {/* Mobile: user actions + hamburger */}
-        <div className="flex lg:hidden items-center gap-2 ml-auto">
+        {/* Mobile */}
+        <div className="flex lg:hidden items-center gap-2 ml-auto" suppressHydrationWarning>
           <HeaderMenu user={user} profile={profile} />
           <MobileMenu />
         </div>

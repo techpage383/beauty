@@ -89,13 +89,13 @@ export default async function AdminReviewsPage({
               href={buildHref(t.value, sort)}
               className={`px-4 py-2 rounded-xl text-base font-semibold transition-all flex items-center gap-1.5 ${
                 status === t.value
-                  ? 'bg-gray-900 text-white shadow-sm'
+                  ? 'bg-brand-600 text-white shadow-sm'
                   : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
               }`}
             >
               {t.label}
               <span className={`text-sm px-1.5 py-0.5 rounded-full ${
-                status === t.value ? 'bg-white/10 text-gray-300' : 'bg-gray-100 text-gray-400'
+                status === t.value ? 'bg-white/20 text-white/80' : 'bg-gray-100 text-gray-400'
               }`}>
                 {t.count ?? 0}
               </span>

@@ -118,7 +118,7 @@ export function ProfileEditForm({ userId, displayName, avatarUrl }: Props) {
               </div>
             )}
             {/* Hover overlay */}
-            <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute inset-0 bg-brand-800/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <FontAwesomeIcon icon={faCamera} className="w-5 h-5 text-white" />
               <span className="text-white text-[10px] font-semibold mt-1">変更</span>
             </div>
@@ -149,7 +149,7 @@ export function ProfileEditForm({ userId, displayName, avatarUrl }: Props) {
           <p className="text-xs text-gray-400 mt-1">{name.length}/30文字</p>
 
           {error && (
-            <p className="text-sm text-red-500 mt-3">{error}</p>
+            <p className="text-sm text-rose-500 mt-3">{error}</p>
           )}
           {saved && !error && (
             <p className="text-sm text-green-600 mt-3 font-semibold">保存しました</p>

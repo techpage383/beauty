@@ -8,16 +8,12 @@
       <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
       <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
-      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#1E40AF" flood-opacity="0.35"/>
-    </filter>
   </defs>
 
   <!-- Shield body -->
   <path
     d="M32 3L7 13.5V30c0 15.5 11 28.5 25 32 14-3.5 25-16.5 25-32V13.5L32 3z"
     fill="url(#g1)"
-    filter="url(#shadow)"
   />
 
   <!-- Gloss overlay -->

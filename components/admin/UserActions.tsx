@@ -37,7 +37,7 @@ export function UserActions({ user }: { user: Profile }) {
         disabled={loading}
         className={`text-sm px-2 py-1 rounded-lg transition ${
           user.is_active
-            ? 'text-red-600 hover:bg-red-50'
+            ? 'text-rose-500 hover:bg-rose-50'
             : 'text-green-600 hover:bg-green-50'
         }`}
       >
