@@ -11,6 +11,7 @@ interface Props {
   clinics: Clinic[]
   treatments: Treatment[]
   userId: string
+  lockedTreatmentId?: string
 }
 
 const SCORE_ITEMS = [
@@ -41,7 +42,7 @@ const PRICE_TYPE_OPTIONS = ['通常価格', 'モニター価格', 'コース価�
 function ScoreSelector({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="text-sm text-gray-600 flex-1">{label}</span>
+      <span className="text-base text-gray-600 flex-1">{label}</span>
       <div className="flex items-center gap-2 shrink-0">
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map(i => (
@@ -53,7 +54,7 @@ function ScoreSelector({ label, value, onChange }: { label: string; value: numbe
             />
           ))}
         </div>
-        <span className="text-base font-bold text-gray-700 w-10 text-right">
+        <span className="text-lg font-bold text-gray-700 w-10 text-right">
           {value > 0 ? `${value}/5` : '-'}
         </span>
       </div>
@@ -61,7 +62,7 @@ function ScoreSelector({ label, value, onChange }: { label: string; value: numbe
   )
 }
 
-export function ReviewForm({ clinics, treatments, userId }: Props) {
+export function ReviewForm({ clinics, treatments, userId, lockedTreatmentId }: Props) {
   const router  = useRouter()
   const supabase = createClient()
   const fileRef  = useRef<HTMLInputElement>(null)
@@ -69,7 +70,7 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
   // Basic fields
   const [title,       setTitle]       = useState('')
   const [clinicId,    setClinicId]    = useState('')
-  const [treatmentId, setTreatmentId] = useState('')
+  const [treatmentId, setTreatmentId] = useState(lockedTreatmentId ?? '')
   const [date,        setDate]        = useState('')
   const [cost,        setCost]        = useState('')
   const [bodyPart,    setBodyPart]    = useState('')
@@ -170,18 +171,18 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
     }
   }
 
-  const inputClass = 'w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white'
+  const inputClass = 'w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 bg-white'
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
-      {error && <p className="text-rose-500 text-sm bg-rose-50 border border-rose-100 rounded-xl px-4 py-3">{error}</p>}
+      {error && <p className="text-rose-500 text-base bg-rose-50 border border-rose-100 rounded-xl px-4 py-3">{error}</p>}
 
       {/* ── 基本情報 ── */}
       <section className="bg-white rounded-2xl border border-gray-100 p-6 space-y-5">
-        <h2 className="font-bold text-gray-900 text-base">基本情報</h2>
+        <h2 className="font-bold text-gray-900 text-lg">基本情報</h2>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1.5">タイトル <span className="text-rose-500">*</span></label>
+          <label className="block text-base font-medium text-gray-700 mb-1.5">タイトル <span className="text-rose-500">*</span></label>
           <input type="text" value={title} onChange={e => setTitle(e.target.value)}
             placeholder="例：二重整形（埋没法）でナチュラルな仕上がりに"
             className={inputClass} />
@@ -189,42 +190,44 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">クリニック</label>
+            <label className="block text-base font-medium text-gray-700 mb-1.5">クリニック</label>
             <select value={clinicId} onChange={e => setClinicId(e.target.value)} className={inputClass}>
               <option value="">選択してください</option>
               {clinics.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
+          {!lockedTreatmentId && (
+            <div>
+              <label className="block text-base font-medium text-gray-700 mb-1.5">施術</label>
+              <select value={treatmentId} onChange={e => setTreatmentId(e.target.value)} className={inputClass}>
+                <option value="">選択してください</option>
+                {treatments.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+              </select>
+            </div>
+          )}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">施術</label>
-            <select value={treatmentId} onChange={e => setTreatmentId(e.target.value)} className={inputClass}>
-              <option value="">選択してください</option>
-              {treatments.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">施術部位</label>
+            <label className="block text-base font-medium text-gray-700 mb-1.5">施術部位</label>
             <input type="text" value={bodyPart} onChange={e => setBodyPart(e.target.value)}
               placeholder="例：目元、鼻、顔全体"
               className={inputClass} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">施術日（年月）</label>
+            <label className="block text-base font-medium text-gray-700 mb-1.5">施術日（年月）</label>
             <input type="month" value={date} onChange={e => setDate(e.target.value)} className={inputClass} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">総額（円）</label>
+            <label className="block text-base font-medium text-gray-700 mb-1.5">総額（円）</label>
             <input type="number" value={cost} onChange={e => setCost(e.target.value)}
               placeholder="180000" min="0" className={inputClass} />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">価格種類</label>
+            <label className="block text-base font-medium text-gray-700 mb-1.5">価格種類</label>
             <select value={priceType} onChange={e => setPriceType(e.target.value)} className={inputClass}>
               {PRICE_TYPE_OPTIONS.map(p => <option key={p} value={p}>{p}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1.5">麻酔</label>
+            <label className="block text-base font-medium text-gray-700 mb-1.5">麻酔</label>
             <select value={anesthesia} onChange={e => setAnesthesia(e.target.value)} className={inputClass}>
               <option value="">選択してください</option>
               {ANESTHESIA_OPTIONS.map(a => <option key={a} value={a}>{a}</option>)}
@@ -235,8 +238,8 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
 
       {/* ── 8項目スコア ── */}
       <section className="bg-white rounded-2xl border border-gray-100 p-6">
-        <h2 className="font-bold text-gray-900 text-base mb-1">8項目スコア <span className="text-rose-500">*</span></h2>
-        <p className="text-xs text-gray-400 mb-5">各項目を1〜5点でクリックして選択してください</p>
+        <h2 className="font-bold text-gray-900 text-lg mb-1">8項目スコア <span className="text-rose-500">*</span></h2>
+        <p className="text-base text-gray-400 mb-5">各項目を1〜5点でクリックして選択してください</p>
         <div className="space-y-5">
           {SCORE_ITEMS.map(({ key, label }) => (
             <ScoreSelector
@@ -251,10 +254,10 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
 
       {/* ── 自由記述 ── */}
       <section className="bg-white rounded-2xl border border-gray-100 p-6">
-        <h2 className="font-bold text-gray-900 text-base mb-1">
+        <h2 className="font-bold text-gray-900 text-lg mb-1">
           自由記述（合計500文字以上推奨）
         </h2>
-        <p className="text-xs text-gray-400 mb-5">
+        <p className="text-base text-gray-400 mb-5">
           現在 <span className={totalBodyChars >= 500 ? 'text-emerald-600 font-bold' : 'text-gray-600 font-semibold'}>{totalBodyChars}文字</span>
           {totalBodyChars < 500 && <span className="text-gray-400"> / あと{500 - totalBodyChars}文字</span>}
           {totalBodyChars >= 500 && <span className="text-emerald-600"> ✓ 十分な記述量です</span>}
@@ -262,7 +265,7 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
         <div className="space-y-5">
           {BODY_SECTIONS.map(({ key, label, placeholder }) => (
             <div key={key}>
-              <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              <label className="block text-base font-semibold text-gray-700 mb-1.5">
                 {label}
                 {key === 'body_reason' && <span className="text-rose-500 ml-1">*</span>}
               </label>
@@ -271,7 +274,7 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
                 onChange={e => setBodies(prev => ({ ...prev, [key]: e.target.value }))}
                 rows={4}
                 placeholder={placeholder}
-                className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none"
+                className="w-full border border-gray-200 rounded-xl px-3.5 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none"
               />
             </div>
           ))}
@@ -280,8 +283,8 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
 
       {/* ── 証拠画像 ── */}
       <section className="bg-white rounded-2xl border border-gray-100 p-6">
-        <h2 className="font-bold text-gray-900 text-base mb-1">証拠資料（任意）</h2>
-        <p className="text-xs text-gray-400 mb-4">
+        <h2 className="font-bold text-gray-900 text-lg mb-1">証拠資料（任意）</h2>
+        <p className="text-base text-gray-400 mb-4">
           領収書・予約確認画面などを添付すると「認証済」バッジが付与されます。<br />
           提出した画像は審査後に非公開設定も可能です。
         </p>
@@ -289,7 +292,7 @@ export function ReviewForm({ clinics, treatments, userId }: Props) {
         <button
           type="button"
           onClick={() => fileRef.current?.click()}
-          className="border-2 border-dashed border-gray-200 rounded-xl px-6 py-4 text-sm text-gray-400 hover:border-brand-400 hover:text-brand-500 transition w-full"
+          className="border-2 border-dashed border-gray-200 rounded-xl px-6 py-4 text-base text-gray-400 hover:border-brand-400 hover:text-brand-500 transition w-full"
         >
           + 画像を選択 (.jpg / .png / .heic)
         </button>

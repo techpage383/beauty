@@ -33,6 +33,7 @@ const BODY_SECTIONS = [
 type ScoreKey = typeof SCORE_ITEMS[number]['key']
 type BodyKey  = typeof BODY_SECTIONS[number]['key']
 
+const CATEGORY_OPTIONS  = ['美容医療', '不妊治療', '性別適合手術'] as const
 const ANESTHESIA_OPTIONS = ['なし', '局所麻酔', '表面麻酔', '静脈麻酔', '全身麻酔', 'その他']
 const PRICE_TYPE_OPTIONS = ['通常価格', 'モニター価格', 'コース価格', 'キャンペーン価格', 'その他']
 
@@ -64,6 +65,7 @@ export function EditReviewForm({ review, clinics, treatments }: Props) {
   const supabase = createClient()
 
   const [title,       setTitle]       = useState(review.title)
+  const [category,    setCategory]    = useState(review.category ?? '')
   const [clinicId,    setClinicId]    = useState(review.clinic_id ?? '')
   const [treatmentId, setTreatmentId] = useState(review.treatment_id ?? '')
   const [date,        setDate]        = useState(review.treatment_date ?? '')
@@ -106,6 +108,7 @@ export function EditReviewForm({ review, clinics, treatments }: Props) {
       .from('reviews')
       .update({
         title,
+        category:       category || null,
         clinic_id:      clinicId || null,
         treatment_id:   treatmentId || null,
         body_part:      bodyPart || null,
@@ -147,6 +150,13 @@ export function EditReviewForm({ review, clinics, treatments }: Props) {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">カテゴリ</label>
+            <select value={category} onChange={e => setCategory(e.target.value)} className={inputClass}>
+              <option value="">選択してください</option>
+              {CATEGORY_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1.5">クリニック</label>
             <select value={clinicId} onChange={e => setClinicId(e.target.value)} className={inputClass}>

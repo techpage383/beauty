@@ -36,7 +36,6 @@ export interface Treatment {
   slug: string
   name: string
   description: string | null
-  category: string | null
   faq: { question: string; answer: string }[] | null
   is_published: boolean
   created_at: string
@@ -50,6 +49,7 @@ export interface Review {
   clinic_id: string | null
   treatment_id: string | null
   title: string
+  category: string | null          // 美容医療 | 不妊治療 | 性別適合手術
   // Meta
   body_part: string | null         // 施術部位 e.g. 目元
   anesthesia: string | null        // 麻酔種類 e.g. 局所麻酔

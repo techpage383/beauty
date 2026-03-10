@@ -49,12 +49,9 @@ export default async function ReviewsPage({
   let treatmentIds: string[] | null = null
   let clinicIds: string[] | null    = null
 
-  // Category or surgery-name filter → find matching treatment IDs
-  if (category || surgery) {
-    let tq = supabase.from('treatments').select('id')
-    if (category) tq = tq.eq('category', category)
-    if (surgery)  tq = tq.ilike('name', `%${surgery}%`)
-    const { data: tData } = await tq
+  // Surgery name filter → find matching treatment IDs
+  if (surgery) {
+    const { data: tData } = await supabase.from('treatments').select('id').ilike('name', `%${surgery}%`)
     treatmentIds = tData?.map(t => t.id) ?? []
   }
 
@@ -71,15 +68,16 @@ export default async function ReviewsPage({
   let query = supabase
     .from('reviews')
     .select(
-      '*, profiles(display_name), clinics(name, slug, address), treatments(name, category), review_images(*)',
+      '*, profiles(display_name), clinics(name, slug, address), treatments(name), review_images(*)',
       { count: 'exact' }
     )
     .eq('status', 'approved')
     .order('published_at', { ascending: false })
 
+  if (category) query = query.eq('category', category)
+
   if (treatmentIds !== null) {
     if (treatmentIds.length === 0) {
-      // No matching treatments → return empty immediately
       return renderPage({ reviews: [], count: 0, page, category, surgery, clinic, region, year })
     }
     query = query.in('treatment_id', treatmentIds)
@@ -145,15 +143,13 @@ function renderPage({
             <p className="text-brand-500 text-xs font-bold tracking-widest mb-2">EXPERIENCE ARCHIVE</p>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">体験投稿アーカイブ</h1>
             <p className="text-sm text-gray-500 max-w-xl leading-relaxed">
-              実際に美容医療を受けた方のリアルな体験談を集めたアーカイブです。<br />
-              施術名・クリニック名・地域などで絞り込んで探せます。
+            実際に体験した方々の記録です。投稿はすべてユーザーの個人的な体験に基づきます。
             </p>
           </div>
 
           {/* Disclaimer banner */}
           <div className="mt-5 bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 text-xs text-amber-700 leading-relaxed">
-            掲載された内容はあくまで個人の主観的な体験であり、医学的・法律的な判断材料として使用することはできません。
-            専門家に関するご相談は、必ず資格のある医療機関にご相談ください。
+          本ページは医療体験の共有を目的としています。医療行為の結果を保証するものではありません。 治療判断は必ず医療機関へご相談ください。
           </div>
         </div>
       </div>
@@ -214,6 +210,8 @@ function renderPage({
           </Link>
         </div>
       </section>
+
+      
     </div>
   )
 }
