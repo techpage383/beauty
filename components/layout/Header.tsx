@@ -4,14 +4,13 @@ import { createClient } from '@/lib/supabase/server'
 import { HeaderMenu } from './HeaderMenu'
 import { MobileMenu } from './MobileMenu'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHospital, faPenToSquare, faNewspaper, faUserDoctor } from '@fortawesome/free-solid-svg-icons'
+import { faPenToSquare, faNewspaper, faUserDoctor } from '@fortawesome/free-solid-svg-icons'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 
 const navItems: { href: string; label: string; icon: IconDefinition }[] = [
   { href: '/about',    label: 'Be Voiceとは', icon: faNewspaper },
   { href: '/reviews',  label: '口コミを見る', icon: faNewspaper },
   { href: '/doctors',  label: '医師情報',     icon: faUserDoctor },
-  { href: '/clinics',  label: 'クリニック',   icon: faHospital },
   { href: '/post/new', label: '投稿する',     icon: faPenToSquare },
 ]
 

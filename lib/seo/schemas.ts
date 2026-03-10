@@ -3,6 +3,15 @@ import type { Clinic, Review, Treatment } from '@/lib/supabase/types'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://truelog.example.com'
 
 export function reviewSchema(review: Review) {
+  const scores = [
+    review.score_doctor, review.score_counseling, review.score_anesthesia,
+    review.score_aftercare, review.score_price, review.score_staff,
+    review.score_facility, review.score_downtime,
+  ].filter((s): s is number => s !== null)
+  const avgRating = scores.length
+    ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length * 10) / 10
+    : null
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Review',
@@ -10,16 +19,14 @@ export function reviewSchema(review: Review) {
       '@type': 'LocalBusiness',
       name: review.clinics?.name ?? '美容クリニック',
     },
-    reviewRating: {
-      '@type': 'Rating',
-      ratingValue: review.rating ?? 0,
-      bestRating: 5,
-    },
+    reviewRating: avgRating !== null
+      ? { '@type': 'Rating', ratingValue: avgRating, bestRating: 5 }
+      : undefined,
     author: {
       '@type': 'Person',
       name: review.profiles?.display_name ?? '匿名ユーザー',
     },
-    reviewBody: review.body,
+    reviewBody: review.body_reason ?? '',
     datePublished: review.published_at?.slice(0, 10),
   }
 }

@@ -214,7 +214,7 @@ export default async function MyPage({
                     )}
                   </div>
                   <p className="font-semibold text-gray-900 truncate">{r.title}</p>
-                  {r.rating && <div className="mt-1.5"><StarRating rating={r.rating} /></div>}
+                  {/* score shown via avgScore if needed */}
                   {r.status === 'rejected' && r.rejected_reason && (
                     <p className="text-sm text-rose-400 mt-2 bg-rose-50 px-3 py-1.5 rounded-xl">
                       却下理由: {r.rejected_reason}
