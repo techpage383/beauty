@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartBar, faPenToSquare, faHospital, faWandMagicSparkles, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faChartBar, faPenToSquare, faHospital, faWandMagicSparkles, faUser, faUserDoctor, faDatabase } from '@fortawesome/free-solid-svg-icons'
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -24,7 +24,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     { href: '/admin/reviews',    label: '口コミ管理',     icon: faPenToSquare },
     { href: '/admin/clinics',    label: 'クリニック管理', icon: faHospital },
     { href: '/admin/treatments', label: '施術管理',       icon: faWandMagicSparkles },
+    { href: '/admin/doctors',    label: '医師管理',       icon: faUserDoctor },
     { href: '/admin/users',      label: 'ユーザー管理',   icon: faUser },
+    { href: '/admin/master',     label: '基本データ管理', icon: faDatabase },
   ]
 
   return (

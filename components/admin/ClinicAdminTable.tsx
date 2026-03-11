@@ -2,6 +2,7 @@
 
 import { useState, Fragment } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { AdminModal } from './AdminModal'
 import type { Clinic } from '@/lib/supabase/types'
 
 function toSlug(name: string) {
@@ -16,42 +17,49 @@ function toSlug(name: string) {
 type FormState = { name: string; description: string; address: string; website_url: string }
 const emptyForm: FormState = { name: '', description: '', address: '', website_url: '' }
 
+const fields: { key: keyof FormState; label: string; placeholder: string }[] = [
+  { key: 'name',        label: '名前 *',        placeholder: '湘南美容クリニック 新宿院' },
+  { key: 'address',     label: '住所',          placeholder: '東京都新宿区...' },
+  { key: 'website_url', label: '公式サイトURL', placeholder: 'https://...' },
+]
+
 export function ClinicAdminTable({ clinics: initial }: { clinics: Clinic[] }) {
   const supabase = createClient()
   const [clinics,   setClinics]   = useState(initial)
-  const [adding,    setAdding]    = useState(false)
-  const [editingId, setEditingId] = useState<string | null>(null)
+  const [modal,     setModal]     = useState<'add' | { clinic: Clinic } | null>(null)
   const [form,      setForm]      = useState<FormState>(emptyForm)
-  const [editForm,  setEditForm]  = useState<FormState>(emptyForm)
   const [error,     setError]     = useState('')
+  const [saving,    setSaving]    = useState(false)
 
-  async function add() {
+  function openAdd() { setForm(emptyForm); setError(''); setModal('add') }
+  function openEdit(c: Clinic) {
+    setForm({ name: c.name, description: c.description ?? '', address: c.address ?? '', website_url: c.website_url ?? '' })
     setError('')
-    if (!form.name) { setError('名前は必須です'); return }
-    const { data, error: err } = await supabase
-      .from('clinics')
-      .insert({ slug: toSlug(form.name), ...form, is_published: true })
-      .select()
-      .single()
-    if (err) { setError(err.message); return }
-    setClinics(prev => [data, ...prev])
-    setForm(emptyForm)
-    setAdding(false)
+    setModal({ clinic: c })
   }
+  function close() { setModal(null) }
 
-  function startEdit(c: Clinic) {
-    setEditingId(c.id)
-    setEditForm({ name: c.name, description: c.description ?? '', address: c.address ?? '', website_url: c.website_url ?? '' })
-    setError('')
-  }
+  async function save() {
+    if (!form.name.trim()) { setError('名前は必須です'); return }
+    setError(''); setSaving(true)
 
-  async function saveEdit(id: string) {
-    setError('')
-    if (!editForm.name) { setError('名前は必須です'); return }
-    const { error: err } = await supabase.from('clinics').update(editForm).eq('id', id)
-    if (err) { setError(err.message); return }
-    setClinics(prev => prev.map(c => c.id === id ? { ...c, ...editForm } : c))
-    setEditingId(null)
+    if (modal === 'add') {
+      const { data, error: err } = await supabase
+        .from('clinics')
+        .insert({ slug: toSlug(form.name), ...form, is_published: true })
+        .select()
+        .single()
+      setSaving(false)
+      if (err) { setError(err.message); return }
+      setClinics(prev => [data, ...prev])
+    } else if (modal && typeof modal === 'object') {
+      const id = modal.clinic.id
+      const { error: err } = await supabase.from('clinics').update(form).eq('id', id)
+      setSaving(false)
+      if (err) { setError(err.message); return }
+      setClinics(prev => prev.map(c => c.id === id ? { ...c, ...form } : c))
+    }
+    close()
   }
 
   async function remove(id: string) {
@@ -60,45 +68,45 @@ export function ClinicAdminTable({ clinics: initial }: { clinics: Clinic[] }) {
     setClinics(prev => prev.filter(c => c.id !== id))
   }
 
-  const inputClass = 'w-full border border-gray-200 rounded-lg px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400'
-  const fields = [
-    { key: 'name' as const,        label: '名前 *',        placeholder: '湘南美容クリニック 新宿院' },
-    { key: 'address' as const,     label: '住所',          placeholder: '東京都新宿区...' },
-    { key: 'website_url' as const, label: '公式サイトURL', placeholder: 'https://...' },
-  ]
+  const inp = 'w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400'
+
+  const isOpen = modal !== null
+  const modalTitle = modal === 'add' ? 'クリニックを追加' : 'クリニックを編集'
 
   return (
     <div>
-      <button
-        onClick={() => { setAdding(a => !a); setForm(emptyForm); setError('') }}
-        className="mb-4 bg-brand-600 text-white px-4 py-2 rounded-xl text-base font-semibold hover:bg-brand-700 transition"
-      >
+      <button onClick={openAdd} className="mb-4 bg-brand-600 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-brand-700 transition">
         + クリニックを追加
       </button>
 
-      {adding && (
-        <div className="bg-white border border-gray-100 rounded-2xl p-5 mb-4 space-y-3">
-          {error && <p className="text-rose-500 text-base">{error}</p>}
-          {fields.map(f => (
-            <div key={f.key}>
-              <label className="block text-base font-medium text-gray-600 mb-1">{f.label}</label>
-              <input type="text" value={form[f.key]} onChange={e => setForm(prev => ({ ...prev, [f.key]: e.target.value }))}
-                placeholder={f.placeholder} className={inputClass} />
+      {isOpen && (
+        <AdminModal title={modalTitle} onClose={close}>
+          {error && <p className="text-rose-500 text-sm mb-3">{error}</p>}
+          <div className="space-y-4">
+            {fields.map(f => (
+              <div key={f.key}>
+                <label className="block text-sm font-medium text-gray-600 mb-1">{f.label}</label>
+                <input type="text" value={form[f.key]} onChange={e => setForm(p => ({ ...p, [f.key]: e.target.value }))}
+                  placeholder={f.placeholder} className={inp} />
+              </div>
+            ))}
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">説明</label>
+              <textarea value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))}
+                rows={3} className={`${inp} resize-none`} />
             </div>
-          ))}
-          <div>
-            <label className="block text-base font-medium text-gray-600 mb-1">説明</label>
-            <textarea value={form.description} onChange={e => setForm(prev => ({ ...prev, description: e.target.value }))}
-              rows={2} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none" />
           </div>
-          <button onClick={add} className="bg-brand-600 text-white px-4 py-2 rounded-xl text-base font-semibold hover:bg-brand-700 transition">
-            追加する
-          </button>
-        </div>
+          <div className="flex gap-3 mt-6">
+            <button onClick={save} disabled={saving} className="bg-brand-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-brand-700 transition disabled:opacity-50">
+              {saving ? '保存中…' : modal === 'add' ? '追加する' : '保存する'}
+            </button>
+            <button onClick={close} className="text-sm text-gray-500 hover:text-gray-700 transition">キャンセル</button>
+          </div>
+        </AdminModal>
       )}
 
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-        <table className="w-full text-base">
+        <table className="w-full text-sm">
           <thead className="bg-gray-50 border-b border-gray-100">
             <tr>
               <th className="text-left px-4 py-3 font-medium text-gray-600 w-[40%]">名前</th>
@@ -113,48 +121,16 @@ export function ClinicAdminTable({ clinics: initial }: { clinics: Clinic[] }) {
                   <td className="px-4 py-3 font-medium text-gray-900">{c.name}</td>
                   <td className="px-4 py-3 text-gray-400 hidden md:table-cell">{c.address ?? '—'}</td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-3 justify-end">
-                      <button
-                        onClick={() => editingId === c.id ? setEditingId(null) : startEdit(c)}
-                        className="bg-brand-600 hover:bg-brand-700 text-white text-base font-medium px-3 py-1.5 rounded-lg transition"
-                      >
-                        {editingId === c.id ? 'キャンセル' : '編集'}
-                      </button>
-                      <button onClick={() => remove(c.id)} className="bg-rose-500 hover:bg-rose-600 text-white text-base font-medium px-3 py-1.5 rounded-lg transition">削除</button>
+                    <div className="flex items-center gap-2 justify-end">
+                      <button onClick={() => openEdit(c)} className="bg-brand-600 hover:bg-brand-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition">編集</button>
+                      <button onClick={() => remove(c.id)} className="bg-rose-500 hover:bg-rose-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition">削除</button>
                     </div>
                   </td>
                 </tr>
-                {editingId === c.id && (
-                  <tr key={`${c.id}-edit`}>
-                    <td colSpan={3} className="px-4 py-4 bg-brand-50 border-t border-brand-100">
-                      {error && <p className="text-rose-500 text-base mb-3">{error}</p>}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
-                        {fields.map(f => (
-                          <div key={f.key}>
-                            <label className="block text-base font-medium text-gray-600 mb-1">{f.label}</label>
-                            <input type="text" value={editForm[f.key]} onChange={e => setEditForm(prev => ({ ...prev, [f.key]: e.target.value }))}
-                              className={inputClass} />
-                          </div>
-                        ))}
-                        <div>
-                          <label className="block text-base font-medium text-gray-600 mb-1">説明</label>
-                          <textarea value={editForm.description} onChange={e => setEditForm(prev => ({ ...prev, description: e.target.value }))}
-                            rows={2} className="w-full border border-gray-200 rounded-lg px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none" />
-                        </div>
-                      </div>
-                      <button onClick={() => saveEdit(c.id)}
-                        className="bg-brand-600 text-white px-4 py-2 rounded-xl text-base font-semibold hover:bg-brand-700 transition">
-                        保存する
-                      </button>
-                    </td>
-                  </tr>
-                )}
               </Fragment>
             ))}
             {clinics.length === 0 && (
-              <tr>
-                <td colSpan={3} className="px-4 py-8 text-center text-gray-400 text-base">クリニックがありません</td>
-              </tr>
+              <tr><td colSpan={3} className="px-4 py-8 text-center text-gray-400">クリニックがありません</td></tr>
             )}
           </tbody>
         </table>
