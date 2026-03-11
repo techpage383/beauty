@@ -87,7 +87,7 @@ export default async function HomePage() {
           </div>
 
           {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-12 mt-16 pt-10 border-t border-gray-200">
+          {/* <div className="flex flex-wrap justify-center gap-12 mt-16 pt-10 border-t border-gray-200">
             {[
               { value: reviewCount ?? 0, label: '口コミ件数' },
               { value: clinicCount ?? 0, label: 'クリニック' },
@@ -100,7 +100,7 @@ export default async function HomePage() {
                 <p className="text-sm text-gray-400 mt-1">{s.label}</p>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </section>
 

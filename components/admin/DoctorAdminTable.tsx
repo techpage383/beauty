@@ -134,6 +134,7 @@ export function DoctorAdminTable({ doctors: initial, clinicOptions, specialtyOpt
     setError(''); setSaving(true)
     try {
       const photoUrl = photoFile ? await uploadPhoto(photoFile) : undefined
+      let savedId: string | undefined
       if (modal === 'add') {
         const { data, error: err } = await supabase
           .from('doctors')
@@ -142,13 +143,18 @@ export function DoctorAdminTable({ doctors: initial, clinicOptions, specialtyOpt
           .single()
         if (err) throw err
         setDoctors(prev => [data as Doctor, ...prev])
+        savedId = (data as Doctor).id
       } else if (modal && typeof modal === 'object') {
         const id = modal.doctor.id
         const payload = formToPayload(form, photoUrl)
         const { error: err } = await supabase.from('doctors').update(payload).eq('id', id)
         if (err) throw err
         setDoctors(prev => prev.map(d => d.id === id ? { ...d, ...payload } : d))
+        savedId = id
       }
+      // Revalidate ISR cache for public pages
+      await fetch(`/api/revalidate?path=/doctors`)
+      if (savedId) await fetch(`/api/revalidate?path=/doctors/${savedId}`)
       close()
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : '保存に失敗しました')
@@ -161,6 +167,8 @@ export function DoctorAdminTable({ doctors: initial, clinicOptions, specialtyOpt
     const next = !d.is_published
     await supabase.from('doctors').update({ is_published: next }).eq('id', d.id)
     setDoctors(prev => prev.map(x => x.id === d.id ? { ...x, is_published: next } : x))
+    await fetch(`/api/revalidate?path=/doctors`)
+    await fetch(`/api/revalidate?path=/doctors/${d.id}`)
   }
 
   async function remove(id: number) {

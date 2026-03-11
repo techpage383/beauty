@@ -20,7 +20,11 @@ CREATE TABLE IF NOT EXISTS public.doctors (
 );
 
 ALTER TABLE public.doctors ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "doctors_public_read" ON public.doctors FOR SELECT USING (is_published = true);
+CREATE POLICY "doctors_public_read"   ON public.doctors FOR SELECT USING (is_published = true);
+CREATE POLICY "doctors_admin_select"  ON public.doctors FOR SELECT TO authenticated USING (true);
+CREATE POLICY "doctors_admin_insert"  ON public.doctors FOR INSERT TO authenticated WITH CHECK (true);
+CREATE POLICY "doctors_admin_update"  ON public.doctors FOR UPDATE TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "doctors_admin_delete"  ON public.doctors FOR DELETE TO authenticated USING (true);
 
 -- Seed data
 INSERT INTO public.doctors (name, kana, specialties, clinic, location, review_count, photo_url, career, qualifications, societies, treatments, stats, recent_reviews) VALUES
