@@ -57,11 +57,18 @@ export default async function DoctorDetailPage({ params }: { params: Promise<{ i
 
             {/* Info */}
             <div className="flex-1">
-              <div className="flex flex-wrap gap-2 mb-3">
+              <div className="flex flex-wrap gap-2 mb-2">
                 {doc.specialties.map(s => (
                   <span key={s} className="inline-block px-2.5 py-1 bg-gray-100 text-gray-600 text-xs rounded-md border border-gray-200">{s}</span>
                 ))}
               </div>
+              {doc.treatments.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {doc.treatments.map(t => (
+                    <span key={t} className="inline-block px-2 py-0.5 bg-brand-50 text-brand-700 text-xs rounded border border-brand-100">{t}</span>
+                  ))}
+                </div>
+              )}
               <p className="text-sm text-gray-400 mb-1">{doc.kana}</p>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{doc.name}</h1>
               <p className="text-base text-gray-700 font-medium mb-1">{doc.clinic}</p>

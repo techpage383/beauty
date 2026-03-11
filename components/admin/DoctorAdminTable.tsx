@@ -11,6 +11,7 @@ interface Props {
   clinicOptions: { id: string; name: string }[]
   specialtyOptions: string[]
   regionOptions: string[]
+  treatmentOptions: string[]
 }
 
 type FormState = {
@@ -22,14 +23,14 @@ type FormState = {
   career: string           // newline-separated
   qualifications: string   // newline-separated
   societies: string        // newline-separated
-  treatments: string       // newline-separated
+  treatments: string[]     // multi-select
   is_published: boolean
   photo_url: string        // current saved URL
 }
 
 const emptyForm: FormState = {
   name: '', kana: '', specialties: [], clinic: '', location: '',
-  career: '', qualifications: '', societies: '', treatments: '',
+  career: '', qualifications: '', societies: '', treatments: [],
   is_published: true, photo_url: '',
 }
 
@@ -50,7 +51,7 @@ function doctorToForm(d: Doctor): FormState {
     career: fromArr(d.career),
     qualifications: fromArr(d.qualifications),
     societies: fromArr(d.societies),
-    treatments: fromArr(d.treatments),
+    treatments: d.treatments,
     is_published: d.is_published,
     photo_url: d.photo_url ?? '',
   }
@@ -66,12 +67,12 @@ function formToPayload(f: FormState, photoUrl?: string) {
     career: toArr(f.career),
     qualifications: toArr(f.qualifications),
     societies: toArr(f.societies),
-    treatments: toArr(f.treatments),
+    treatments: f.treatments,
     is_published: f.is_published,
   }
 }
 
-export function DoctorAdminTable({ doctors: initial, clinicOptions, specialtyOptions, regionOptions }: Props) {
+export function DoctorAdminTable({ doctors: initial, clinicOptions, specialtyOptions, regionOptions, treatmentOptions }: Props) {
   const supabase = createClient()
   const [doctors,   setDoctors]   = useState(initial)
   const [modal,     setModal]     = useState<'add' | { doctor: Doctor } | null>(null)
@@ -105,6 +106,15 @@ export function DoctorAdminTable({ doctors: initial, clinicOptions, specialtyOpt
       specialties: p.specialties.includes(name)
         ? p.specialties.filter(s => s !== name)
         : [...p.specialties, name],
+    }))
+  }
+
+  function toggleTreatment(name: string) {
+    setForm(p => ({
+      ...p,
+      treatments: p.treatments.includes(name)
+        ? p.treatments.filter(t => t !== name)
+        : [...p.treatments, name],
     }))
   }
 
@@ -286,6 +296,35 @@ export function DoctorAdminTable({ doctors: initial, clinicOptions, specialtyOpt
               </div>
             </div>
 
+            {/* Treatments checkboxes */}
+            <div className="sm:col-span-2">
+              <label className="block text-sm font-medium text-gray-600 mb-2">
+                対応施術
+                {form.treatments.length > 0 && (
+                  <span className="ml-2 text-xs text-brand-600 font-normal">{form.treatments.length}件選択中</span>
+                )}
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {treatmentOptions.map(t => {
+                  const selected = form.treatments.includes(t)
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => toggleTreatment(t)}
+                      className={`px-3 py-1.5 rounded-lg text-sm border transition ${
+                        selected
+                          ? 'bg-brand-600 text-white border-brand-600'
+                          : 'bg-white text-gray-600 border-gray-200 hover:border-brand-400'
+                      }`}
+                    >
+                      {selected && <span className="mr-1">✓</span>}{t}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
             {/* Career */}
             <div className="sm:col-span-2">
               <label className="block text-sm font-medium text-gray-600 mb-1">経歴（1行1項目）</label>
@@ -301,11 +340,6 @@ export function DoctorAdminTable({ doctors: initial, clinicOptions, specialtyOpt
               <label className="block text-sm font-medium text-gray-600 mb-1">所属学会（1行1項目）</label>
               <textarea rows={3} value={form.societies} onChange={e => setForm(p => ({ ...p, societies: e.target.value }))}
                 placeholder={'日本形成外科学会\n日本美容外科学会（JSAPS）'} className={ta} />
-            </div>
-            <div className="sm:col-span-2">
-              <label className="block text-sm font-medium text-gray-600 mb-1">対応施術（1行1項目）</label>
-              <textarea rows={3} value={form.treatments} onChange={e => setForm(p => ({ ...p, treatments: e.target.value }))}
-                placeholder={'二重整形（埋没法・切開法）\nヒアルロン酸注入'} className={ta} />
             </div>
           </div>
           <div className="flex gap-3 mt-6">

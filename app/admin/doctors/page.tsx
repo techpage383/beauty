@@ -9,11 +9,13 @@ export default async function AdminDoctorsPage() {
     { data: clinics },
     { data: specialties },
     { data: regions },
+    { data: treatmentOptions },
   ] = await Promise.all([
     supabase.from('doctors').select('*').order('id'),
     supabase.from('clinics').select('id, name').eq('is_published', true).order('name'),
     supabase.from('doctor_specialties').select('name').order('sort_order'),
     supabase.from('doctor_regions').select('name').order('sort_order'),
+    supabase.from('doctor_treatment_options').select('name').order('sort_order'),
   ])
 
   return (
@@ -26,6 +28,7 @@ export default async function AdminDoctorsPage() {
         clinicOptions={(clinics ?? []) as { id: string; name: string }[]}
         specialtyOptions={(specialties ?? []).map(s => s.name)}
         regionOptions={(regions ?? []).map(r => r.name)}
+        treatmentOptions={(treatmentOptions ?? []).map(t => t.name)}
       />
     </div>
   )

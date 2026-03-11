@@ -57,13 +57,17 @@ export default async function DoctorsPage() {
               >
                 {/* Photo */}
                 <div className="relative overflow-hidden bg-gray-100" style={{ aspectRatio: '4/3' }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={doc.photo_url ?? ''}
-                    alt={`${doc.name}先生のプロフィール写真`}
-                    loading="lazy"
-                    className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-300"
-                  />
+                  {doc.photo_url ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={doc.photo_url}
+                      alt={`${doc.name}先生のプロフィール写真`}
+                      loading="lazy"
+                      className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-300 text-5xl">👤</div>
+                  )}
                 </div>
 
                 {/* Info */}

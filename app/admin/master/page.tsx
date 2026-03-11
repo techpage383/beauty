@@ -3,9 +3,10 @@ import { MasterDataPanel } from '@/components/admin/MasterDataPanel'
 
 export default async function AdminMasterPage() {
   const supabase = await createClient()
-  const [{ data: specialties }, { data: regions }] = await Promise.all([
+  const [{ data: specialties }, { data: regions }, { data: treatments }] = await Promise.all([
     supabase.from('doctor_specialties').select('id, name, sort_order').order('sort_order'),
     supabase.from('doctor_regions').select('id, name, sort_order').order('sort_order'),
+    supabase.from('doctor_treatment_options').select('id, name, sort_order').order('sort_order'),
   ])
 
   return (
@@ -25,6 +26,11 @@ export default async function AdminMasterPage() {
           title="地域"
           table="doctor_regions"
           items={regions ?? []}
+        />
+        <MasterDataPanel
+          title="対応施術"
+          table="doctor_treatment_options"
+          items={treatments ?? []}
         />
       </div>
     </div>

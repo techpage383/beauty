@@ -52,7 +52,7 @@ export default async function AdminReviewDetailPage({
             ))}
             <div className="flex gap-2 items-center">
               <span className="text-gray-400 w-24 shrink-0">評価</span>
-              {r.rating ? <StarRating rating={r.rating} /> : <span>—</span>}
+              {r.score_doctor ? <StarRating rating={r.score_doctor} /> : <span>—</span>}
             </div>
           </div>
           {r.status === 'rejected' && r.rejected_reason && (
@@ -77,13 +77,13 @@ export default async function AdminReviewDetailPage({
             </div>
           )}
           <h3 className="font-bold text-gray-900 text-xl mb-2">{r.title}</h3>
-          {r.rating && (
+          {r.score_doctor && (
             <div className="flex items-center gap-1 mb-3">
-              <StarRating rating={r.rating} />
-              <span className="text-base text-gray-500">{r.rating}.0</span>
+              <StarRating rating={r.score_doctor} />
+              <span className="text-base text-gray-500">{r.score_doctor}.0</span>
             </div>
           )}
-          <p className="text-gray-700 text-base leading-relaxed whitespace-pre-wrap">{r.body}</p>
+          <p className="text-gray-700 text-base leading-relaxed whitespace-pre-wrap">{r.body_experience ?? r.body_satisfaction ?? ''}</p>
         </div>
       </div>
     </div>

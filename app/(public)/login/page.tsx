@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { LoginForm } from '@/components/auth/LoginForm'
 
@@ -16,7 +17,7 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="flex justify-center mb-8">
             <div className="flex items-center gap-2">
-              <img src="/logo.svg" alt="Be Voice" className="w-9 h-9" />
+              <Image src="/logo.svg" alt="Be Voice" width={36} height={36} />
               <span className="font-bold text-2xl text-brand-700">Be Voice</span>
             </div>
           </div>

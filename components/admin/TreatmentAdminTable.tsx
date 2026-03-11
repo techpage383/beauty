@@ -91,7 +91,7 @@ export function TreatmentAdminTable({ treatments: initial }: { treatments: Treat
             <button onClick={save} disabled={saving} className="bg-brand-600 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-brand-700 transition disabled:opacity-50">
               {saving ? '保存中…' : modal === 'add' ? '追加する' : '保存する'}
             </button>
-            <button onClick={close} className="text-sm text-gray-500 hover:text-gray-700 transition">キャンセル</button>
+            <button onClick={close} className="bg-rose-500 text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-rose-600 transition">キャンセル</button>
           </div>
         </AdminModal>
       )}
