@@ -42,15 +42,15 @@ export async function Header() {
         </Link>
 
         {/* Spacer left */}
-        <div className="hidden lg:flex flex-1" />
+        <div className="hidden md:flex flex-1" />
 
         {/* Nav — desktop */}
-        <nav className="hidden lg:flex items-stretch h-20 border-l border-r border-gray-200">
+        <nav className="hidden md:flex items-stretch h-20 border-l border-r border-gray-200">
           {navItems.map(item => (
             <Link
               key={item.label}
               href={item.href}
-              className="flex flex-col items-center justify-center gap-1.5 w-32 border-r border-gray-200 last:border-r-0 text-brand-700 hover:bg-brand-50 transition-colors group"
+              className="flex flex-col items-center justify-center gap-1.5 w-28 border-r border-gray-200 last:border-r-0 text-brand-700 hover:bg-brand-50 transition-colors group"
             >
               <FontAwesomeIcon icon={item.icon} className="w-5 h-5 group-hover:scale-110 transition-transform" />
               <span className="text-xs font-semibold text-gray-600 group-hover:text-brand-700 whitespace-nowrap">
@@ -61,15 +61,15 @@ export async function Header() {
         </nav>
 
         {/* Spacer right */}
-        <div className="hidden lg:flex flex-1" />
+        <div className="hidden md:flex flex-1" />
 
         {/* User actions — desktop */}
-        <div className="hidden lg:flex">
+        <div className="hidden md:flex">
           <HeaderMenu user={user} profile={profile} />
         </div>
 
         {/* Mobile */}
-        <div className="flex lg:hidden items-center gap-2 ml-auto" suppressHydrationWarning>
+        <div className="flex md:hidden items-center gap-2 ml-auto" suppressHydrationWarning>
           <HeaderMenu user={user} profile={profile} />
           <MobileMenu />
         </div>

@@ -93,6 +93,46 @@ export interface ReviewImage {
   created_at: string
 }
 
+export interface DoctorStatItem {
+  label: string
+  count: number
+  pct: number
+}
+
+export interface DoctorStats {
+  total: number
+  satisfaction: DoctorStatItem[]
+  categories: DoctorStatItem[]
+}
+
+export interface DoctorRecentReview {
+  treatment: string
+  date: string
+  status: string
+  statusColor: string
+  body: string
+}
+
+export interface Doctor {
+  id: number
+  name: string
+  kana: string | null
+  specialties: string[]
+  clinic: string | null
+  location: string | null
+  review_count: number
+  photo_url: string | null
+  career: string[]
+  qualifications: string[]
+  societies: string[]
+  treatments: string[]
+  stats: DoctorStats | null
+  recent_reviews: DoctorRecentReview[] | null
+  is_published: boolean
+  created_at: string
+  updated_at: string
+}
+
 // Computed helper
 export function avgScore(review: Review): number | null {
   const scores = [
