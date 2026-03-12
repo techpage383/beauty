@@ -48,8 +48,10 @@ export function Footer() {
             </a>
             <p className="text-xs font-bold text-gray-500 tracking-widest uppercase mb-5 mt-8">法的情報</p>
             <nav className="flex flex-col gap-3 text-sm">
-              <Link href="/terms"   className="hover:text-white transition-colors">利用規約</Link>
-              <Link href="/privacy" className="hover:text-white transition-colors">プライバシーポリシー</Link>
+              <Link href="/terms"    className="hover:text-white transition-colors">利用規約</Link>
+              <Link href="/privacy"  className="hover:text-white transition-colors">プライバシーポリシー</Link>
+              <Link href="/company"  className="hover:text-white transition-colors">運営会社</Link>
+              <Link href="/contact"  className="hover:text-white transition-colors">お問い合わせ</Link>
             </nav>
           </div>
         </div>
