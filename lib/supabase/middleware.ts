@@ -23,10 +23,18 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
-  const pathname = request.nextUrl.pathname
+  let user: { id: string } | null = null
+  try {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  } catch {
+    user = null
+  }
 
-  if ((pathname.startsWith('/mypage') || pathname.startsWith('/post')) && !user) {
+  const pathname = request.nextUrl.pathname
+  const isProtected = pathname.startsWith('/mypage') || pathname.startsWith('/post')
+
+  if (isProtected && !user) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
@@ -44,7 +52,7 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  if (user && (pathname.startsWith('/mypage') || pathname.startsWith('/post'))) {
+  if (user && isProtected) {
     const { data: profile } = await supabase
       .from('profiles')
       .select('is_active')
